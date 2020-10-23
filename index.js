@@ -50,7 +50,7 @@ client.on('message', (message) => {
     );
   } else if (splitMessage[0] == '*amor') {
     message.reply(
-      ':PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: ',
+      ':pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: ',
     );
   }
 });
