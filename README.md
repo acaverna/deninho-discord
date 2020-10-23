@@ -8,19 +8,21 @@ Para adicionar o Deninho Discord no seu servidor de Discord, entre [no link para
 
 # Comandos
 
-## !eita
+Todos os comandos começam com o profixo `*`
+
+## eita
 
 Conta e mostra quantas vezes a [Levxyca](https://github.com/levxyca) falou eita.
 
-## !caraio
+## caraio
 
 Conta e mostra quantas vezes a [Pachi Codes](https://github.com/pachicodes) falou caraio.
 
-## !alfa
+## alfa
 
 Conta e mostra quantas vezes já escutamos Panificadora Alfa.
 
-## !splash
+## splash
 
 responde com `Splash Splash`
 
