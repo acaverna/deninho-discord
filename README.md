@@ -14,7 +14,7 @@ Conta e mostra quantas vezes a [Pachi Codes](https://github.com/pachicodes) falo
 
 ## !alfa
 
-Conta e mostra quantas vezes a [Pachi Codes](https://github.com/pachicodes) falou caraio.
+Conta e mostra quantas vezes já escutamos Panificadora Alfa.
 
 ## !splash
 
