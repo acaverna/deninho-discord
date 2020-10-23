@@ -1,6 +1,7 @@
 require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client();
+client.login(process.env.TOKEN);
 
 let eitaCounter = 0;
 let caraioCounter = 0;
@@ -37,21 +38,5 @@ client.on('message', (message) => {
     );
   } else if (splitMessage[0] == '*splash') {
     message.reply('Splash Splash');
-  } else if (splitMessage[0].split(' ')[0] == '*ban') {
-    const banUser = message.author;
-    const bannedUser = client.users.get(
-      splitMessage[1].replace('<@!', '').replace('>', ''),
-    );
-    const random = Math.random() > 5;
-
-    if (random) {
-      message.send(`o usuário ${bannedUser} foi banido!`);
-      bannedUser.setVoiceChannel('chat-música');
-    } else {
-      message.send(`o usuário ${bannedUser} foi banido!`);
-      bannedUser.setVoiceChannel('chat-música');
-    }
   }
 });
-
-client.login(process.env.TOKEN);
