@@ -2,7 +2,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
-const prefix = '.'
+const prefix = '*'
 
 let eitaCounter = 0
 let caraioCounter = 0
