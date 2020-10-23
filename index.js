@@ -50,7 +50,7 @@ client.on('message', (message) => {
     );
   } else if (splitMessage[0] == '*amor') {
     message.reply(
-      ':pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: :pachiLuv: ',
+      'Amor!', {files: ['https://static-cdn.jtvnw.net/emoticons/v2/302464922/default/dark/1.0']}
     );
   }
 });
