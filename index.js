@@ -37,4 +37,13 @@ client.on("message", (message) => {
   } else if (splitMessage[0] == "*splash") {
     message.reply("Splash Splash");
   }
+  else if (splitMessage[0] == "*selvagem"){
+    message.reply("Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr")
+  }
+  else if (splitMessage[0] == "*capturar"){
+    message.reply("Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr")
+  }
+  else if (splitMessage[0] == "*selva"){
+    message.reply("Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr")
+  }
 });
