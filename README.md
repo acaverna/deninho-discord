@@ -2,6 +2,10 @@
 
 Deninho Bot é um bot para discord feito especialmente para o servidor **Caverna do Patocornio**.
 
+# Adicionando no seu servidor
+
+Para adicionar o Deninho Discord no seu servidor de Discord, entre [no link para fazer a conexão](https://discord.com/oauth2/authorize?client_id=768959134556880997&permissions=24280128&scope=bot) e siga as instruções até o bot já estar no seu servidor.
+
 # Comandos
 
 ## !eita
