@@ -26,6 +26,10 @@ Conta e mostra quantas vezes já escutamos Panificadora Alfa.
 
 responde com `Splash Splash`
 
+## amor
+
+responde com muito amor
+
 ## Bom Dia
 
 Caso alguém mande `bom dia` em algum chat, o Deninho irá reponder `Bom Dia!`
