@@ -17,8 +17,6 @@ client.on('message', (message) => {
   message.content = message.content.toLowerCase();
   const splitMessage = message.content.split(' ');
 
-  console.log(splitMessage);
-
   if (message.content == 'bom dia' || message.content == 'dia') {
     message.reply(`Bom Dia!`);
   } else if (message.content == 'boa noite' || message.content == 'noite') {
