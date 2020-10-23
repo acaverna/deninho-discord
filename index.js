@@ -49,6 +49,8 @@ client.on('message', (message) => {
       'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
     );
   } else if (splitMessage[0] == '*amor') {
-    message.reply(':PachiLuv: ' * 10);
+    message.reply(
+      ':PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: :PachiLuv: ',
+    );
   }
 });
