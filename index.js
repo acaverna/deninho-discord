@@ -14,7 +14,7 @@ client.on('message', (message) => {
   if (message.author.bot) return;
 
   message.content = message.content.toLowerCase()
-  console.log(message.content)
+
   if (message.content == 'bom dia' || message.content == 'dia'){
     message.reply(`Bom Dia!`)
   }
