@@ -41,7 +41,3 @@ Caso alguém mande `boa noite` em algum chat, o Deninho irá reponder `Boa Noite
 ## Boas Festas
 
 Caso alguém mande `boas festas` em algum chat, o Deninho irá reponder `Boas Festas!`
-
-## Olá [nick]
-
-dá olá para [nick]
