@@ -21,6 +21,11 @@ client.on('message', (message) => {
     message.reply(`Bom Dia!`);
   } else if (message.content == 'boa noite' || message.content == 'noite') {
     message.reply(`Boa Noite!`);
+  } else if (
+    message.split(' ')[0] == 'olá' &&
+    message.split(' ').length === 2
+  ) {
+    message.reply(`Olá! @${message.split(' ')[1]}`);
   } else if (message.content == 'boas festas') {
     message.reply(`Boas Festas!`);
   } else if (splitMessage[0] == '*eita') {
@@ -49,8 +54,6 @@ client.on('message', (message) => {
       'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
     );
   } else if (splitMessage[0] == '*amor') {
-    message.reply(
-      'Amor!', {files: ['./img/pachiLuv.png']}
-    );
+    message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
   }
 });
