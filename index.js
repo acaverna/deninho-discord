@@ -22,10 +22,10 @@ client.on('message', (message) => {
   } else if (message.content == 'boa noite' || message.content == 'noite') {
     message.reply(`Boa Noite!`);
   } else if (
-    message.split(' ')[0] == 'olá' &&
-    message.split(' ').length === 2
+    message.content.split(' ')[0] == 'olá' &&
+    message.content.split(' ').length === 2
   ) {
-    message.reply(`Olá! @${message.split(' ')[1]}`);
+    message.reply(`Olá! @${message.content.split(' ')[1]}`);
   } else if (message.content == 'boas festas') {
     message.reply(`Boas Festas!`);
   } else if (splitMessage[0] == '*eita') {
