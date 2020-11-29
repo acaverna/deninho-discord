@@ -13,44 +13,65 @@ client.on('ready', () => {
 
 client.on('message', (message) => {
   if (message.author.bot) return;
-
   message.content = message.content.toLowerCase();
   const splitMessage = message.content.split(' ');
 
+  reactToApresentation(message);
+  generalCommands(message, splitMessage);
+});
+
+function reactToApresentation(message) {
+  if (message.channel.name == '👩🏻apresentação👨🏻') {
+    const pachiHype = '764136952177229835';
+    message.react(pachiHype);
+  }
+}
+
+function generalCommands(message, splitMessage) {
+  const deninhoReact = '777326021007245323';
   if (message.content == 'bom dia' || message.content == 'dia') {
     message.reply(`Bom Dia!`);
+    message.react(deninhoReact);
   } else if (message.content == 'boa noite' || message.content == 'noite') {
     message.reply(`Boa Noite!`);
+    message.react(deninhoReact);
   } else if (message.content == 'boas festas') {
     message.reply(`Boas Festas!`);
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*eita') {
     eitaCounter++;
     message.reply(`A Lexyca já falou eita ${eitaCounter} vezes`);
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*caraio') {
     caraioCounter++;
     message.reply(`A Pachi já falou caraio ${caraioCounter} vezes`);
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*alfa') {
     panificadoraAlfaCounter++;
     message.reply(
       `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`,
     );
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*splash') {
     message.reply('Splash Splash');
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*selvagem') {
     message.reply(
       'Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr',
     );
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*capturar') {
     message.reply(
       'Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr',
     );
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*selva') {
     message.reply(
       'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
     );
+    message.react(deninhoReact);
   } else if (splitMessage[0] == '*amor') {
-    message.reply(
-      'Amor!', {files: ['./img/pachiLuv.png']}
-    );
+    message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
+    message.react(deninhoReact);
   }
-});
+}
