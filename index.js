@@ -29,8 +29,8 @@ function reactToApresentation(message) {
 }
 
 function reactToEIsso(message) {
-  const accepts = ["é isso", "e isso"];
-  if (accepts.includes(toLowerCase(message).content)) {
+  const accepts = ["é isso", "e isso", "É ISSO", "E ISSO"];
+  if (accepts.includes(message.content)) {
     console.log(message);
     const eisso = "771852824715067412";
     message.react(eisso);
