@@ -30,6 +30,10 @@ responde com `Splash Splash`
 
 responde com muito amor
 
+## cancelar
+
+Cancela alguém por não divulgar a live, ou caso não passe nenhum parâmetro, o mundo é cancelado
+
 ## Bom Dia
 
 Caso alguém mande `bom dia` em algum chat, o Deninho irá reponder `Bom Dia!`
