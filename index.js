@@ -84,5 +84,16 @@ function generalCommands(message, splitMessage) {
   } else if (splitMessage[0] == "*amor") {
     message.reply("Amor!", { files: ["./img/pachiLuv.png"] });
     message.react(deninhoReact);
+  } else if (splitMessage[0] == "*cancelar") {
+    if (
+      message.channel.name.includes("premiun") ||
+      message.channel.name.includes("chat")
+    ) {
+      if (splitMessage[1]) {
+        message.reply(`cancelou ${splitMessage[1]} por não divulgar a live`);
+      } else {
+        message.reply(`cancelou o mundo`);
+      }
+    }
   }
 }
