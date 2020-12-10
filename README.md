@@ -34,6 +34,16 @@ responde com muito amor
 
 Cancela alguém por algum motivo aleatório, ou caso não passe nenhum parâmetro, o mundo é cancelado por algum motivo aleatório.
 
+## padrao
+
+Cria um padrão, e quem não seguir o padrão será punido com uma adição á sua lista de quebras de padrão.
+
+## vergonha
+
+lista as pessoas que quebraram o padrão.
+
+# Comandos Automáticos (sem asterico)
+
 ## Bom Dia
 
 Caso alguém mande `bom dia` em algum chat, o Deninho irá reponder `Bom Dia!`

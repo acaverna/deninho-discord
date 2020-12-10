@@ -19,6 +19,7 @@ client.on('message', (message) => {
 
   reactToApresentation(message);
   reactToEIsso(message);
+  executeStandard(message);
   generalCommands(message, splitMessage);
 });
 
@@ -92,7 +93,7 @@ function generalCommands(message, splitMessage) {
     ) {
       cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
       cancelamentos = cancelamentosBrute.split('\n');
-      
+
       var cancelamento =
         cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
 
@@ -102,5 +103,75 @@ function generalCommands(message, splitMessage) {
         message.reply(`cancelou o mundo por ${cancelamento}`);
       }
     }
+  } else if (splitMessage[0] == '*padrao') {
+    if (splitMessage[1]) {
+      const standard = splitMessage[1];
+      const channel = message.channel.name;
+      fs.writeFileSync(`padrao-${channel}.txt`, standard);
+      message.delete();
+    }
+  } else if (splitMessage[0] == '*vergonha') {
+    try {
+      const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
+      const breakersLine = breakersBrute.split('\n');
+      breakersMessage = '';
+
+      breakersLine.forEach((breaker) => {
+        if (breaker != '') {
+          breakerData = breaker.split(',');
+
+          breakersMessage += `\n${breakerData[0]} quebrou o padrão ${breakerData[1]} vezes`;
+        }
+      });
+
+      console.log(breakersLine);
+      message.reply(breakersMessage);
+    } catch (err) {
+      console.log(err);
+    }
   }
+}
+
+function executeStandard(message) {
+  try {
+    const channel = message.channel.name;
+    const standard = fs.readFileSync(`padrao-${channel}.txt`, 'utf8');
+
+    if (message.content != standard && standard != '') {
+      message.reply(
+        'Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!',
+      );
+
+      fs.writeFileSync(`padrao-${channel}.txt`, '');
+
+      try {
+        const username = message.author.username;
+        const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
+        const breakersLine = breakersBrute.split('\n');
+        const breakers = [];
+
+        breakersLine.forEach((breaker) => {
+          breakers.push(breaker.split(','));
+        });
+
+        const userData = breakers.find((userData) => {
+          return userData[0] == username;
+        });
+
+        if (userData) {
+          const username = userData[0];
+          const breaks = Number(userData[1]);
+
+          const content = breakersBrute.replace(
+            `${username},${breaks}`,
+            `${username},${breaks + 1}`,
+          );
+          fs.writeFileSync('breakers.txt', content);
+        } else {
+          const user = message.author.username;
+          fs.writeFileSync('breakers.txt', `${user},1\n`);
+        }
+      } catch (err) {}
+    }
+  } catch (err) {}
 }
