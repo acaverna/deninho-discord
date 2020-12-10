@@ -32,7 +32,7 @@ responde com muito amor
 
 ## cancelar
 
-Cancela alguém por não divulgar a live, ou caso não passe nenhum parâmetro, o mundo é cancelado
+Cancela alguém por algum motivo aleatório, ou caso não passe nenhum parâmetro, o mundo é cancelado por algum motivo aleatório.
 
 ## Bom Dia
 
