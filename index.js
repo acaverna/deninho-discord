@@ -91,9 +91,8 @@ function generalCommands(message, splitMessage) {
       message.channel.name.includes('chat')
     ) {
       cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
-      console.log(cancelamentosBrute);
       cancelamentos = cancelamentosBrute.split('\n');
-
+      
       var cancelamento =
         cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
 
