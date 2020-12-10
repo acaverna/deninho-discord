@@ -99,7 +99,7 @@ function generalCommands(message, splitMessage) {
     }
   } else if (splitMessage[0] == '*padrao') {
     if (splitMessage[1]) {
-      const standard = splitMessage[1];
+      const standard = splitMessage[1].toLowerCase();
       const channel = message.channel.name;
       fs.writeFileSync(`padrao-${channel}.txt`, standard);
       message.delete();
@@ -128,7 +128,7 @@ function generalCommands(message, splitMessage) {
 function executeStandard(message) {
   try {
     const channel = message.channel.name;
-    const standard = fs.readFileSync(`padrao-${channel}.txt`, 'utf8');
+    const standard = fs.readFileSync(`padrao-${channel}.txt`, 'utf8').toLowerCase();
 
     if (message.content != standard && standard != '') {
       message.reply(
