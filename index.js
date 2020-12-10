@@ -86,21 +86,16 @@ function generalCommands(message, splitMessage) {
     message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
     message.react(deninhoReact);
   } else if (splitMessage[0] == '*cancelar') {
-    if (
-      message.channel.name.includes('premiun') ||
-      message.channel.name.includes('chat')
-    ) {
-      cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
-      cancelamentos = cancelamentosBrute.split('\n');
+    cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
+    cancelamentos = cancelamentosBrute.split('\n');
 
-      var cancelamento =
-        cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
+    var cancelamento =
+      cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
 
-      if (splitMessage[1]) {
-        message.reply(`cancelou ${splitMessage[1]} por ${cancelamento}`);
-      } else {
-        message.reply(`cancelou o mundo por ${cancelamento}`);
-      }
+    if (splitMessage[1]) {
+      message.reply(`cancelou ${splitMessage[1]} por ${cancelamento}`);
+    } else {
+      message.reply(`cancelou o mundo por ${cancelamento}`);
     }
   } else if (splitMessage[0] == '*padrao') {
     if (splitMessage[1]) {
@@ -152,7 +147,7 @@ function executeStandard(message) {
           breakers.push(breaker.split(','));
         });
 
-        const index = findBreaker(breakers,username);
+        const index = findBreaker(breakers, username);
 
         if (index != -1) {
           const userData = breakers[index];
@@ -177,11 +172,11 @@ function executeStandard(message) {
   }
 }
 
-function findBreaker(breakers,username) {
+function findBreaker(breakers, username) {
   for (i = 0; i < breakers.length; i++) {
     if (breakers[i][0] == username) {
       return i;
     }
   }
-  return -1
+  return -1;
 }
