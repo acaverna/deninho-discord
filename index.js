@@ -33,7 +33,6 @@ function reactToApresentation(message) {
 function reactToEIsso(message) {
   const accepts = ['é isso', 'e isso', 'É ISSO', 'E ISSO'];
   if (accepts.includes(message.content)) {
-    console.log(message);
     const eisso = '771852824715067412';
     message.react(eisso);
   }
@@ -124,7 +123,6 @@ function generalCommands(message, splitMessage) {
         }
       });
 
-      console.log(breakersLine);
       message.reply(breakersMessage);
     } catch (err) {
       console.log(err);
@@ -154,11 +152,10 @@ function executeStandard(message) {
           breakers.push(breaker.split(','));
         });
 
-        const userData = breakers.find((userData) => {
-          return userData[0] == username;
-        });
+        const index = findBreaker(breakers,username);
 
-        if (userData) {
+        if (index != -1) {
+          const userData = breakers[index];
           const username = userData[0];
           const breaks = Number(userData[1]);
 
@@ -166,12 +163,25 @@ function executeStandard(message) {
             `${username},${breaks}`,
             `${username},${breaks + 1}`,
           );
+
           fs.writeFileSync('breakers.txt', content);
         } else {
-          const user = message.author.username;
-          fs.writeFileSync('breakers.txt', `${user},1\n`);
+          fs.appendFileSync('breakers.txt', `${username},1\n`);
         }
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     }
-  } catch (err) {}
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+function findBreaker(breakers,username) {
+  for (i = 0; i < breakers.length; i++) {
+    if (breakers[i][0] == username) {
+      return i;
+    }
+  }
+  return -1
 }
