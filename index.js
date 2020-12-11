@@ -128,9 +128,17 @@ function generalCommands(message, splitMessage) {
 function executeStandard(message) {
   try {
     const channel = message.channel.name;
-    const standard = fs.readFileSync(`padrao-${channel}.txt`, 'utf8').toLowerCase();
+    const standard = fs
+      .readFileSync(`padrao-${channel}.txt`, 'utf8')
+      .toLowerCase();
 
-    if (message.content != standard && standard != '') {
+    messageSplited = message.content.split(' ');
+
+    if (
+      message.content != standard &&
+      standard != '' &&
+      messageSplited[0] != '*padrao'
+    ) {
       message.reply(
         'Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!',
       );
