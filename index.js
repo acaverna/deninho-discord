@@ -103,7 +103,7 @@ function verRanking(username) {
       ranking[indexUser][1]
     } pontos`;
   } else {
-    msg += `\n\n Você possui pontos :(`;
+    msg += `\n\n Você não possui pontos :(`;
   }
 
   return msg;
