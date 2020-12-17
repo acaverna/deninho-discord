@@ -245,8 +245,9 @@ async function generalCommands(message, splitMessage) {
     if (message.channel.name.includes('cassino')) {
       const username = message.author.username;
       const randomNumber = Math.random();
+      const formatNumber = new Intl.NumberFormat('pt-BR', { maximumSignificantDigits: 1 }).format(randomNumber)
       if (randomNumber >= 0.95){
-        message.reply(`Você tirou ${randomNumber * 100}, Parabéns, Você ganhou!`)
+        message.reply(`Você tirou ${formatNumber * 100}, Parabéns, Você ganhou!`)
         if (pontos[username]) {
           pontos[username] += 10;
         } else {
@@ -255,7 +256,7 @@ async function generalCommands(message, splitMessage) {
         salvarPontos(pontos)
       }
       else{
-        message.reply(`Você tirou ${randomNumber * 100}, Parabéns, Você perdeu!`)
+        message.reply(`Você tirou ${formatNumber * 100}, Parabéns, Você perdeu!`)
       }
     }
   } else if (splitMessage[0] == '*rank') {
