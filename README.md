@@ -42,6 +42,14 @@ Cria um padrão, e quem não seguir o padrão será punido com uma adição á s
 
 lista as pessoas que quebraram o padrão.
 
+## spin
+
+joga um Spin no cassinho
+
+## roll
+
+joga um roll no casino
+
 # Comandos Automáticos (sem asterico)
 
 ## Bom Dia
