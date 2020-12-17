@@ -46,7 +46,7 @@ lista as pessoas que quebraram o padrão.
 
 joga um Spin no cassinho
 
-## roll
+## roll
 
 joga um roll no casino
 
