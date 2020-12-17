@@ -79,23 +79,6 @@ function salvarPontos(user, points) {
     });
 }
 
-function lerPontos() {
-  let dados = {};
-  try {
-    const conteudoArquivo = fs.readFileSync("pontos.json");
-    if (!conteudoArquivo) return;
-    dados = JSON.parse(conteudoArquivo);
-  } catch (err) {
-    const obj = JSON.stringify({});
-    fs.writeFile("pontos.json", obj, "utf8", (erro) => {});
-    console.log("Deu erro no arquivo");
-  } finally {
-    return dados;
-  }
-}
-
-const pontos = lerPontos();
-
 function reactToApresentation(message) {
   if (message.channel.name == "👩🏻apresentação👨🏻") {
     const pachiHype = "764136952177229835";
@@ -264,14 +247,6 @@ async function generalCommands(message, splitMessage) {
           salvarPontos(username, 0);
         }
       }, 3500);
-    }
-  } else if (splitMessage[0] == "*pontos") {
-    if (message.channel.name.includes("cassino")) {
-      if (pontos[username]) {
-        message.reply(`Você tem ${pontos[username]} pontos`);
-      } else {
-        message.reply(`Você tem 0 pontos`);
-      }
     }
   } else if (splitMessage[0] == "*roll") {
     if (
