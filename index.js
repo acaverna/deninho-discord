@@ -246,7 +246,7 @@ async function generalCommands(message, splitMessage) {
       const username = message.author.username;
       const randomNumber = Math.random();
       const formatNumber = new Intl.NumberFormat('pt-BR', { maximumSignificantDigits: 3 }).format(randomNumber)
-      if (randomNumber >= 0.9){
+      if (randomNumber >= 0.95){
         message.reply(`Você tirou ${formatNumber}, Parabéns, Você ganhou!`)
         if (pontos[username]) {
           pontos[username] += 10;
