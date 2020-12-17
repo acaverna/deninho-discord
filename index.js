@@ -220,7 +220,7 @@ async function generalCommands(message, splitMessage) {
 
       setTimeout(() => {
         if (sorteados[0] === sorteados[1] && sorteados[0] === sorteados[2]) {
-          message.reply(`Parabéns você ganhou`);
+          message.reply(`Parabéns você acaba de ganhar <:${sorteados[0]}>`);
 
           if (pontos[username]) {
             pontos[username] += 100;
