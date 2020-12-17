@@ -255,7 +255,7 @@ async function generalCommands(message, splitMessage) {
         salvarPontos(pontos)
       }
       else{
-        message.reply(`Você tirou ${formatNumber}, Parabéns, Você perdeu!`)
+        message.reply(`Você tirou ${randomNumber * 100}, Parabéns, Você perdeu!`)
       }
     }
   } else if (splitMessage[0] == '*rank') {
