@@ -1,6 +1,17 @@
-require('dotenv').config();
-const fs = require('fs');
-const Discord = require('discord.js');
+require("dotenv").config();
+
+const admin = require("firebase-admin");
+
+let serviceAccount = JSON.parse(process.env.CREDENTIALS);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+let db = admin.firestore();
+
+const fs = require("fs");
+const Discord = require("discord.js");
 const client = new Discord.Client();
 client.login(process.env.TOKEN);
 
@@ -8,24 +19,24 @@ let eitaCounter = 0;
 let caraioCounter = 0;
 let panificadoraAlfaCounter = 0;
 let spinOptions = [
-  'deninha:776790121399451718',
-  'patocorniopink:764155550941315084',
-  'jpbrab0EIsso:771852824715067412',
-  'pachic2Oo:764136010744332328',
-  'Kappa:775520055756324894',
-  'deninho:777326021007245323',
-  'D_:776935665081516092',
+  "deninha:776790121399451718",
+  "patocorniopink:764155550941315084",
+  "jpbrab0EIsso:771852824715067412",
+  "pachic2Oo:764136010744332328",
+  "Kappa:775520055756324894",
+  "deninho:777326021007245323",
+  "D_:776935665081516092",
 ];
-const emojiPadrao = '<:KappaGolden:777234103543136256>';
+const emojiPadrao = "<:KappaGolden:777234103543136256>";
 
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
 });
 
-client.on('message', (message) => {
+client.on("message", (message) => {
   if (message.author.bot) return;
   message.content = message.content.toLowerCase();
-  const splitMessage = message.content.split(' ');
+  const splitMessage = message.content.split(" ");
 
   reactToApresentation(message);
   reactToEIsso(message);
@@ -33,27 +44,51 @@ client.on('message', (message) => {
   generalCommands(message, splitMessage);
 });
 
-function salvarPontos(data) {
-  const obj = JSON.stringify(data);
-  fs.writeFile('pontos.json', obj, 'utf8', (erro) => {
-    if (erro) {
-      console.log(erro);
-    } else {
-      console.log('salvo');
-    }
-  });
+function salvarPontos(user, points) {
+  users = [];
+
+  const cassino = db.collection("cassino");
+  cassino
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        userDoc = doc.data();
+
+        users.push(userDoc.user);
+
+        if (user == userDoc.user) {
+          doc.ref.update({
+            points: userDoc.points + points,
+            plays: userDoc.plays + 1,
+          });
+        }
+      });
+
+      if (!users.includes(user)) {
+        let userDoc = cassino.doc(user);
+
+        userDoc.set({
+          user: user,
+          points: points,
+          plays: 1,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log("Error getting documents", err);
+    });
 }
 
 function lerPontos() {
   let dados = {};
   try {
-    const conteudoArquivo = fs.readFileSync('pontos.json');
+    const conteudoArquivo = fs.readFileSync("pontos.json");
     if (!conteudoArquivo) return;
     dados = JSON.parse(conteudoArquivo);
   } catch (err) {
     const obj = JSON.stringify({});
-    fs.writeFile('pontos.json', obj, 'utf8', (erro) => {});
-    console.log('Deu erro no arquivo');
+    fs.writeFile("pontos.json", obj, "utf8", (erro) => {});
+    console.log("Deu erro no arquivo");
   } finally {
     return dados;
   }
@@ -62,104 +97,96 @@ function lerPontos() {
 const pontos = lerPontos();
 
 function reactToApresentation(message) {
-  if (message.channel.name == '👩🏻apresentação👨🏻') {
-    const pachiHype = '764136952177229835';
+  if (message.channel.name == "👩🏻apresentação👨🏻") {
+    const pachiHype = "764136952177229835";
     message.react(pachiHype);
   }
 }
 
 function reactToEIsso(message) {
-  const accepts = ['é isso', 'e isso', 'É ISSO', 'E ISSO'];
+  const accepts = ["é isso", "e isso", "É ISSO", "E ISSO"];
   if (accepts.includes(message.content)) {
-    const eisso = '771852824715067412';
+    const eisso = "771852824715067412";
     message.react(eisso);
   }
 }
 
-function verRanking(username) {
-  let indexUser = null;
-  let msg = '\n O ranking atual é: \n ';
+async function verRanking(username, userId) {
+  rankingString = "";
+  const connection = await db.collection("cassino").get();
+  const users = connection._docs();
 
-  const ranking = Object.entries(
-    Object.fromEntries(Object.entries(pontos).sort(([, a], [, b]) => b - a)),
-  );
+  for (i = 0; i < users.length; i++) {
+    let user = connection._docs()[i]._fieldsProto;
 
-  ranking.forEach((user, index) => {
-    if (user[0] === username) {
-      indexUser = index;
+    rankingString += `\n${i + 1}° **${user.user.stringValue}** com **${
+      user.points.integerValue
+    }** pontos, jogando **${user.plays.integerValue}** vezes`;
+
+    if (user.user.stringValue == username) {
+      var userData = user;
     }
-  });
-
-  let counter = ranking.length < 3 ? ranking.length : 3;
-
-  for (let i = 0; i < counter; i += 1) {
-    const user = ranking[i];
-
-    msg += `\n ${i + 1}º **${user[0]}** com ${user[1]} pontos.`;
   }
-
-  if (indexUser != null) {
-    msg += `\n\n Você está em ${indexUser + 1}º com ${
-      ranking[indexUser][1]
-    } pontos`;
+  if (userData) {
+    rankingString += `\n\n Enquanto você, <@${userId}>, tem **${userData.points.integerValue}** pontos, jogando **${userData.plays.integerValue}** vezes.`;
   } else {
-    msg += `\n\n Você não possui pontos :(`;
+    rankingString += `\n\n Enquanto você, <@${userId}> , **não tem ponto nenhum** :(`;
   }
-
-  return msg;
+  return rankingString;
 }
 
 async function generalCommands(message, splitMessage) {
-  const deninhoReact = '777326021007245323';
+  const deninhoReact = "777326021007245323";
   const username = message.author.username;
+  const userId = message.author.id;
 
-  if (message.content == 'bom dia' || message.content == 'dia') {
+  if (message.content == "bom dia" || message.content == "dia") {
     message.reply(`Bom Dia!`);
     message.react(deninhoReact);
-  } else if (message.content == 'boa noite' || message.content == 'noite') {
+  } else if (message.content == "boa noite" || message.content == "noite") {
     message.reply(`Boa Noite!`);
     message.react(deninhoReact);
-  } else if (message.content == 'boas festas') {
+  } else if (message.content == "boas festas") {
     message.reply(`Boas Festas!`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*eita') {
+  } else if (splitMessage[0] == "*eita") {
     eitaCounter++;
     message.reply(`A Lexyca já falou eita ${eitaCounter} vezes`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*caraio') {
+  } else if (splitMessage[0] == "*caraio") {
     caraioCounter++;
     message.reply(`A Pachi já falou caraio ${caraioCounter} vezes`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*alfa') {
+  } else if (splitMessage[0] == "*alfa") {
     panificadoraAlfaCounter++;
     message.reply(
-      `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`,
+      `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*splash') {
-    message.reply('Splash Splash');
+  } else if (splitMessage[0] == "*splash") {
+    message.reply("Splash Splash");
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*selvagem') {
+  } else if (splitMessage[0] == "*selvagem") {
     message.reply(
-      'Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*capturar') {
+  } else if (splitMessage[0] == "*capturar") {
     message.reply(
-      'Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*selva') {
+  } else if (splitMessage[0] == "*selva") {
     message.reply(
-      'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*amor') {
-    message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
+  } else if (splitMessage[0] == "*amor") {
+    message.reply("Amor!", { files: ["./img/pachiLuv.png"] });
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*cancelar') {
-    cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
-    cancelamentos = cancelamentosBrute.split('\n');
+  } else if (splitMessage[0] == "*cancelar") {
+    cancelamentosBrute = fs.readFileSync("cancelamentos.txt", "utf8");
+    cancelamentos = cancelamentosBrute.split("\n");
 
     var cancelamento =
       cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
@@ -169,22 +196,22 @@ async function generalCommands(message, splitMessage) {
     } else {
       message.reply(`cancelou o mundo por ${cancelamento}`);
     }
-  } else if (splitMessage[0] == '*padrao') {
+  } else if (splitMessage[0] == "*padrao") {
     if (splitMessage[1]) {
       const standard = splitMessage[1].toLowerCase();
       const channel = message.channel.name;
       fs.writeFileSync(`padrao-${channel}.txt`, standard);
       message.delete();
     }
-  } else if (splitMessage[0] == '*vergonha') {
+  } else if (splitMessage[0] == "*vergonha") {
     try {
-      const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
-      const breakersLine = breakersBrute.split('\n');
-      breakersMessage = '';
+      const breakersBrute = fs.readFileSync("breakers.txt", "utf8");
+      const breakersLine = breakersBrute.split("\n");
+      breakersMessage = "";
 
       breakersLine.forEach((breaker) => {
-        if (breaker != '') {
-          breakerData = breaker.split(',');
+        if (breaker != "") {
+          breakerData = breaker.split(",");
 
           breakersMessage += `\n${breakerData[0]} quebrou o padrão ${breakerData[1]} vezes`;
         }
@@ -192,14 +219,16 @@ async function generalCommands(message, splitMessage) {
 
       message.reply(breakersMessage);
     } catch (err) {}
-  } else if (splitMessage[0] == '*clap'){
-    userClapped = splitMessage[1]
+  } else if (splitMessage[0] == "*clap") {
+    userClapped = splitMessage[1];
 
-    message.delete()
-    message.channel.send(`${userClapped} CLAP`, {files: ['img/clap.gif']})
-
-  } else if (splitMessage[0] == '*spin') {
-    if (message.channel.name.includes('cassino')) {
+    message.delete();
+    message.channel.send(`${userClapped} CLAP`, { files: ["img/clap.gif"] });
+  } else if (splitMessage[0] == "*spin") {
+    if (
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
+    ) {
       let sorteados = [];
 
       for (let i = 0; i < 3; i++) {
@@ -209,7 +238,7 @@ async function generalCommands(message, splitMessage) {
       }
 
       let msg = await message.channel.send(
-        `${emojiPadrao} ${emojiPadrao} ${emojiPadrao}`,
+        `${emojiPadrao} ${emojiPadrao} ${emojiPadrao}`
       );
 
       setTimeout(() => {
@@ -228,47 +257,46 @@ async function generalCommands(message, splitMessage) {
         if (sorteados[0] === sorteados[1] && sorteados[0] === sorteados[2]) {
           message.reply(`Parabéns você acaba de ganhar <:${sorteados[0]}>`);
 
-          if (pontos[username]) {
-            pontos[username] += 100;
-          } else {
-            pontos[username] = 100;
-          }
-          salvarPontos(pontos)
+          salvarPontos(username, 100);
         } else {
           message.reply(`Parabéns você perdeu`);
+
+          salvarPontos(username, 0);
         }
       }, 3500);
     }
-  } else if (splitMessage[0] == '*pontos') {
-    if (message.channel.name.includes('cassino')) {
+  } else if (splitMessage[0] == "*pontos") {
+    if (message.channel.name.includes("cassino")) {
       if (pontos[username]) {
         message.reply(`Você tem ${pontos[username]} pontos`);
       } else {
         message.reply(`Você tem 0 pontos`);
       }
     }
-  } else if (splitMessage[0] == '*roll') {
-    if (message.channel.name.includes('cassino')) {
-      const username = message.author.username;
-      const randomNumber = Math.random();
-      const formatNumber = new Intl.NumberFormat('pt-BR', { maximumSignificantDigits: 1 }).format(randomNumber)
-      if (randomNumber >= 0.95){
-        message.reply(`Você tirou ${formatNumber * 100}, Parabéns, Você ganhou!`)
-        if (pontos[username]) {
-          pontos[username] += 10;
-        } else {
-          pontos[username] = 10;
-        }
-        salvarPontos(pontos)
-      }
-      else{
-        message.reply(`Você tirou ${formatNumber * 100}, Parabéns, Você perdeu!`)
+  } else if (splitMessage[0] == "*roll") {
+    if (
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
+    ) {
+      const randomNumber = Math.random() * 100;
+      const formatNumber = new Intl.NumberFormat("pt-BR", {
+        maximumSignificantDigits: 1,
+      }).format(randomNumber);
+      if (randomNumber >= 95) {
+        message.reply(`Você tirou ${formatNumber}, Parabéns, Você ganhou!`);
+        salvarPontos(username, 10);
+      } else {
+        message.reply(`Você tirou ${formatNumber}, Parabéns, Você perdeu!`);
+        salvarPontos(username, 0);
       }
     }
-  } else if (splitMessage[0] == '*rank') {
-    if (message.channel.name.includes('cassino')) {
-      let msg = verRanking(username);
-      message.reply(msg);
+  } else if (splitMessage[0] == "*rank") {
+    if (
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
+    ) {
+      let msg = await verRanking(username, userId);
+      message.channel.send(msg);
     }
   }
 }
@@ -277,30 +305,30 @@ function executeStandard(message) {
   try {
     const channel = message.channel.name;
     const standard = fs
-      .readFileSync(`padrao-${channel}.txt`, 'utf8')
+      .readFileSync(`padrao-${channel}.txt`, "utf8")
       .toLowerCase();
 
-    messageSplited = message.content.split(' ');
+    messageSplited = message.content.split(" ");
 
     if (
       message.content != standard &&
-      standard != '' &&
-      messageSplited[0] != '*padrao'
+      standard != "" &&
+      messageSplited[0] != "*padrao"
     ) {
       message.reply(
-        'Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!',
+        "Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!"
       );
 
-      fs.writeFileSync(`padrao-${channel}.txt`, '');
+      fs.writeFileSync(`padrao-${channel}.txt`, "");
 
       try {
         const username = message.author.username;
-        const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
-        const breakersLine = breakersBrute.split('\n');
+        const breakersBrute = fs.readFileSync("breakers.txt", "utf8");
+        const breakersLine = breakersBrute.split("\n");
         const breakers = [];
 
         breakersLine.forEach((breaker) => {
-          breakers.push(breaker.split(','));
+          breakers.push(breaker.split(","));
         });
 
         const index = findBreaker(breakers, username);
@@ -312,12 +340,12 @@ function executeStandard(message) {
 
           const content = breakersBrute.replace(
             `${username},${breaks}`,
-            `${username},${breaks + 1}`,
+            `${username},${breaks + 1}`
           );
 
-          fs.writeFileSync('breakers.txt', content);
+          fs.writeFileSync("breakers.txt", content);
         } else {
-          fs.appendFileSync('breakers.txt', `${username},1\n`);
+          fs.appendFileSync("breakers.txt", `${username},1\n`);
         }
       } catch (err) {}
     }
