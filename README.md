@@ -46,9 +46,13 @@ lista as pessoas que quebraram o padrão.
 
 joga um Spin no cassinho
 
-## roll
+## roll
 
 joga um roll no casino
+
+## clap
+
+bate palmas pra alguém
 
 # Comandos Automáticos (sem asterico)
 

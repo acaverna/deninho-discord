@@ -192,6 +192,12 @@ async function generalCommands(message, splitMessage) {
 
       message.reply(breakersMessage);
     } catch (err) {}
+  } else if (splitMessage[0] == '*clap'){
+    userClapped = splitMessage[1]
+
+    message.delete()
+    message.channel.send(`${userClapped} CLAP`, {files: ['img/clap.gif']})
+
   } else if (splitMessage[0] == '*spin') {
     if (message.channel.name.includes('cassino')) {
       let sorteados = [];
