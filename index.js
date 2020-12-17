@@ -227,6 +227,7 @@ async function generalCommands(message, splitMessage) {
           } else {
             pontos[username] = 100;
           }
+          salvarPontos(pontos)
         } else {
           message.reply(`Parabéns você perdeu`);
         }
@@ -238,6 +239,24 @@ async function generalCommands(message, splitMessage) {
         message.reply(`Você tem ${pontos[username]} pontos`);
       } else {
         message.reply(`Você tem 0 pontos`);
+      }
+    }
+  } else if (splitMessage[0] == '*roll') {
+    if (message.channel.name.includes('cassino')) {
+      const username = message.author.username;
+      const randomNumber = Math.random();
+      const formatNumber = new Intl.NumberFormat('pt-BR', { maximumSignificantDigits: 3 }).format(randomNumber)
+      if (randomNumber >= 0.9){
+        message.reply(`Você tirou ${formatNumber}, Parabéns, Você ganhou!`)
+        if (pontos[username]) {
+          pontos[username] += 10;
+        } else {
+          pontos[username] = 10;
+        }
+        salvarPontos(pontos)
+      }
+      else{
+        message.reply(`Você tirou ${formatNumber}, Parabéns, Você perdeu!`)
       }
     }
   } else if (splitMessage[0] == '*rank') {
