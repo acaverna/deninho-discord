@@ -232,7 +232,7 @@ async function generalCommands(message, splitMessage) {
   } else if (splitMessage[0] == "*spin") {
     //Retorna se tiver um spin em andamento
     if (block){
-      message.reply(`Parabéns, é Spam <:${spinOptions[3]}>`);
+      message.reply(`sem spam <:${spinOptions[3]}>`);
       return;
     } else if (
       message.channel.name.includes("cassino") ||
