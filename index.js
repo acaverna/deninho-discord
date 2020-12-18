@@ -28,6 +28,7 @@ let spinOptions = [
   "D_:776935665081516092",
 ];
 const emojiPadrao = "<:KappaGolden:777234103543136256>";
+var block = false;
 
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
@@ -229,12 +230,17 @@ async function generalCommands(message, splitMessage) {
     message.delete();
     message.channel.send(`${userClapped} CLAP`, { files: ["img/clap.gif"] });
   } else if (splitMessage[0] == "*spin") {
-    if (
+    //Retorna se tiver um spin em andamento
+    if (block){
+      //message.reply(`spin em andamento...`);
+      return;
+    } else if (
       message.channel.name.includes("cassino") ||
       message.channel.name.includes("teste-bot")
     ) {
       let sorteados = [];
-
+      block = true;
+      
       for (let i = 0; i < 3; i++) {
         let sorteado =
           spinOptions[Math.floor(Math.random() * spinOptions.length)];
@@ -267,6 +273,7 @@ async function generalCommands(message, splitMessage) {
 
           salvarPontos(username, 0);
         }
+        block = false;
       }, 3500);
     }
   } else if (splitMessage[0] == "*roll") {
