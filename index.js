@@ -97,10 +97,31 @@ function reactToEIsso(message) {
 async function verRanking(username, userId) {
   rankingString = "";
   const connection = await db.collection("cassino").get();
-  const users = connection._docs();
+  const usersBrute = connection._docs();
+  const users = []
+
+  for (i = 0; i < usersBrute.length; i++) {
+    let user = connection._docs()[i]._fieldsProto;
+    users.push(user)
+  }
+
+  users.sort((a, b) => {
+    if (Number(a.points.integerValue) > Number(b.points.integerValue)) {
+      return -1;
+    }
+    if (Number(a.points.integerValue) < Number(b.points.integerValue)) {
+      return 1;
+    }
+    if (Number(a.points.integerValue) == Number(b.points.integerValue)) {
+      if (Number(a.plays.integerValue) > Number(b.plays.integerValue)) {
+        return 1
+      }
+      return -1
+    }
+  })
 
   for (i = 0; i < users.length; i++) {
-    let user = connection._docs()[i]._fieldsProto;
+    let user = users[i]
 
     rankingString += `\n${i + 1}° **${user.user.stringValue}** com **${
       user.points.integerValue
