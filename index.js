@@ -285,8 +285,7 @@ async function generalCommands(message, splitMessage) {
       const formatNumber = new Intl.NumberFormat('pt-BR', {
         maximumSignificantDigits: 2,
       }).format(randomNumber);
-      console.log(randomNumber, username)
-      if (randomNumber >= 100) {
+      if (randomNumber >= 99) {
         message.reply(
           `Você tirou ${formatNumber}, Parabéns, Você ganhou com pontos elevados!`,
         );
