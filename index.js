@@ -288,6 +288,9 @@ async function generalCommands(message, splitMessage) {
       if (randomNumber >= 95) {
         message.reply(`Você tirou ${formatNumber}, Parabéns, Você ganhou!`);
         salvarPontos(username, 10);
+      }else if (randomNumber == 100){
+        message.reply(`Você tirou ${formatNumber}, Parabéns, Você ganhou com pontos elevados!`);
+        salvarPontos(username, 150);
       } else {
         message.reply(`Você tirou ${formatNumber}, Parabéns, Você perdeu!`);
         salvarPontos(username, 0);
