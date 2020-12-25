@@ -45,40 +45,40 @@ client.on('message', (message) => {
   generalCommands(message, splitMessage);
 });
 
-// function salvarPontos(user, points) {
-//   users = [];
+function salvarPontos(user, points) {
+  users = [];
 
-//   const cassino = db.collection('cassino');
-//   cassino
-//     .get()
-//     .then((snapshot) => {
-//       snapshot.forEach((doc) => {
-//         userDoc = doc.data();
+  const cassino = db.collection('cassino');
+  cassino
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        userDoc = doc.data();
 
-//         users.push(userDoc.user);
+        users.push(userDoc.user);
 
-//         if (user == userDoc.user) {
-//           doc.ref.update({
-//             points: userDoc.points + points,
-//             plays: userDoc.plays + 1,
-//           });
-//         }
-//       });
+        if (user == userDoc.user) {
+          doc.ref.update({
+            points: userDoc.points + points,
+            plays: userDoc.plays + 1,
+          });
+        }
+      });
 
-//       if (!users.includes(user)) {
-//         let userDoc = cassino.doc(user);
+      if (!users.includes(user)) {
+        let userDoc = cassino.doc(user);
 
-//         userDoc.set({
-//           user: user,
-//           points: points,
-//           plays: 1,
-//         });
-//       }
-//     })
-//     .catch((err) => {
-//       console.log('Error getting documents', err);
-//     });
-// }
+        userDoc.set({
+          user: user,
+          points: points,
+          plays: 1,
+        });
+      }
+    })
+    .catch((err) => {
+      console.log('Error getting documents', err);
+    });
+}
 
 function reactToApresentation(message) {
   if (message.channel.name == '👩🏻apresentação👨🏻') {
@@ -95,50 +95,50 @@ function reactToEIsso(message) {
   }
 }
 
-// async function verRanking(username, userId) {
-//   rankingString = '';
-//   const connection = await db.collection('cassino').get();
-//   const usersBrute = connection._docs();
-//   const users = [];
+async function verRanking(username, userId) {
+  rankingString = '';
+  const connection = await db.collection('cassino').get();
+  const usersBrute = connection._docs();
+  const users = [];
 
-//   for (i = 0; i < usersBrute.length; i++) {
-//     let user = connection._docs()[i]._fieldsProto;
-//     users.push(user);
-//   }
+  for (i = 0; i < usersBrute.length; i++) {
+    let user = connection._docs()[i]._fieldsProto;
+    users.push(user);
+  }
 
-//   users.sort((a, b) => {
-//     if (Number(a.points.integerValue) > Number(b.points.integerValue)) {
-//       return -1;
-//     }
-//     if (Number(a.points.integerValue) < Number(b.points.integerValue)) {
-//       return 1;
-//     }
-//     if (Number(a.points.integerValue) == Number(b.points.integerValue)) {
-//       if (Number(a.plays.integerValue) > Number(b.plays.integerValue)) {
-//         return 1;
-//       }
-//       return -1;
-//     }
-//   });
+  users.sort((a, b) => {
+    if (Number(a.points.integerValue) > Number(b.points.integerValue)) {
+      return -1;
+    }
+    if (Number(a.points.integerValue) < Number(b.points.integerValue)) {
+      return 1;
+    }
+    if (Number(a.points.integerValue) == Number(b.points.integerValue)) {
+      if (Number(a.plays.integerValue) > Number(b.plays.integerValue)) {
+        return 1;
+      }
+      return -1;
+    }
+  });
 
-//   for (i = 0; i < users.length; i++) {
-//     let user = users[i];
+  for (i = 0; i < users.length; i++) {
+    let user = users[i];
 
-//     rankingString += `\n${i + 1}° **${user.user.stringValue}** com **${
-//       user.points.integerValue
-//     }** pontos, jogando **${user.plays.integerValue}** vezes`;
+    rankingString += `\n${i + 1}° **${user.user.stringValue}** com **${
+      user.points.integerValue
+    }** pontos, jogando **${user.plays.integerValue}** vezes`;
 
-//     if (user.user.stringValue == username) {
-//       var userData = user;
-//     }
-//   }
-//   if (userData) {
-//     rankingString += `\n\n Enquanto você, <@${userId}>, tem **${userData.points.integerValue}** pontos, jogando **${userData.plays.integerValue}** vezes.`;
-//   } else {
-//     rankingString += `\n\n Enquanto você, <@${userId}> , **não tem ponto nenhum** :(`;
-//   }
-//   return rankingString;
-// }
+    if (user.user.stringValue == username) {
+      var userData = user;
+    }
+  }
+  if (userData) {
+    rankingString += `\n\n Enquanto você, <@${userId}>, tem **${userData.points.integerValue}** pontos, jogando **${userData.plays.integerValue}** vezes.`;
+  } else {
+    rankingString += `\n\n Enquanto você, <@${userId}> , **não tem ponto nenhum** :(`;
+  }
+  return rankingString;
+}
 
 async function generalCommands(message, splitMessage) {
   const deninhoReact = '777326021007245323';
