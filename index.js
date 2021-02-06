@@ -39,6 +39,7 @@ client.on('message', (message) => {
   message.content = message.content.toLowerCase();
   const splitMessage = message.content.split(' ');
 
+  antiDesculpasForMorganna(message);
   reactToApresentation(message);
   reactToEIsso(message);
   executeStandard(message);
@@ -78,6 +79,15 @@ function salvarPontos(user, points) {
     .catch((err) => {
       console.log('Error getting documents', err);
     });
+}
+
+function antiDesculpasForMorganna(message) {
+  const sorries = ['desculpas', 'perdão', 'perdões', 'desculpa', 'foi mal'];
+  console.log(message.author.username == 'Ederson Ferreira');
+  let checkSorries = sorries.some((v) => message.content.includes(v));
+  if (message.author.username == 'morgiovanelli' && checkSorries) {
+    message.reply('SEM DESCULPAS MORGANNA!');
+  }
 }
 
 function reactToApresentation(message) {
