@@ -1,6 +1,13 @@
+const fs = require('fs');
+const https = require('https');
+const streamersOn = new Map();
+
 require('dotenv').config();
 
 const admin = require('firebase-admin');
+const streamers = JSON.parse(
+  fs.readFileSync('./data/streamers.json', { encoding: 'utf8', flag: 'r' }),
+);
 
 let serviceAccount = JSON.parse(process.env.CREDENTIALS);
 
@@ -10,7 +17,6 @@ admin.initializeApp({
 
 let db = admin.firestore();
 
-const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.login(process.env.TOKEN);
@@ -32,6 +38,8 @@ var block = false;
 
 client.on('ready', () => {
   console.log(`Logged as ${client.user.tag}`);
+
+  startDivulgation(client);
 });
 
 client.on('message', (message) => {
@@ -83,7 +91,6 @@ function salvarPontos(user, points) {
 
 function antiDesculpasForMorganna(message) {
   const sorries = ['desculpas', 'perdão', 'perdões', 'desculpa', 'foi mal'];
-  console.log(message.author.username == 'Ederson Ferreira');
   let checkSorries = sorries.some((v) => message.content.includes(v));
   if (message.author.username == 'morgiovanelli' && checkSorries) {
     message.reply('SEM DESCULPAS MORGANNA!');
@@ -368,6 +375,51 @@ function executeStandard(message) {
       } catch (err) {}
     }
   } catch (err) {}
+}
+
+function startDivulgation(client) {
+  setInterval(() => {
+    streamers.forEach((streamer) => {
+      let request = https.get(
+        'https://api.twitch.tv/kraken/streams/' + streamer.id,
+        {
+          headers: {
+            Accept: 'application/vnd.twitchtv.v5+json',
+            'Client-ID': process.env.CLIENT_ID,
+          },
+        },
+        (res) => {
+          if (res.statusCode !== 200) {
+            console.error(
+              `Did not get an OK from the server. Code: ${res.statusCode}`,
+            );
+            res.resume();
+            return;
+          }
+
+          let data = '';
+
+          res.on('data', (chunk) => {
+            data += chunk;
+          });
+
+          res.on('close', () => {
+            streamerData = JSON.parse(data);
+            if (
+              streamerData.stream != null &&
+              !streamersOn.get(streamer.name)
+            ) {
+              streamersOn.set(streamer.name, streamerData);
+              client.channels.cache.get("763505017944277003").send("**" + streamer.name + '**' + " Está on! \n_" + streamerData.stream.channel.status + "_\nhttps://twitch.tv/" + streamer.name)
+            }
+            if (streamersOn.get(streamer.name) && streamerData.stream == null) {
+              streamersOn.delete(streamer.name);
+            }
+          });
+        },
+      );
+    });
+  }, 5000);
 }
 
 function findBreaker(breakers, username) {
