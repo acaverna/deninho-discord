@@ -419,7 +419,7 @@ function startDivulgation(client) {
         },
       );
     });
-  }, 5000);
+  }, 10000);
 }
 
 function findBreaker(breakers, username) {
