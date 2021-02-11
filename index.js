@@ -203,6 +203,14 @@ async function generalCommands(message, splitMessage) {
       'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
     );
     message.react(deninhoReact);
+  } else if (splitMessage[0] == '*bifeday') {
+    now = new Date();
+
+    if (now.getMonth() == 3 && now.getDate() == 20) {
+      message.reply('BIFEDAY!');
+    } else {
+      message.reply('noti tuday.');
+    }
   } else if (splitMessage[0] == '*amor') {
     message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
     message.react(deninhoReact);
@@ -410,7 +418,17 @@ function startDivulgation(client) {
               !streamersOn.get(streamer.name)
             ) {
               streamersOn.set(streamer.name, streamerData);
-              client.channels.cache.get("763505017944277003").send("**" + streamer.name + '**' + " Está on! \n_" + streamerData.stream.channel.status + "_\nhttps://twitch.tv/" + streamer.name)
+              client.channels.cache
+                .get('763505017944277003')
+                .send(
+                  '**' +
+                    streamer.name +
+                    '**' +
+                    ' Está on! \n_' +
+                    streamerData.stream.channel.status +
+                    '_\nhttps://twitch.tv/' +
+                    streamer.name,
+                );
             }
             if (streamersOn.get(streamer.name) && streamerData.stream == null) {
               streamersOn.delete(streamer.name);
