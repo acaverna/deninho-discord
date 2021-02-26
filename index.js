@@ -1,12 +1,12 @@
-const fs = require('fs');
-const https = require('https');
+const fs = require("fs");
+const https = require("https");
 const streamersOn = new Map();
 
-require('dotenv').config();
+require("dotenv").config();
 
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 const streamers = JSON.parse(
-  fs.readFileSync('./data/streamers.json', { encoding: 'utf8', flag: 'r' }),
+  fs.readFileSync("./data/streamers.json", { encoding: "utf8", flag: "r" })
 );
 
 let serviceAccount = JSON.parse(process.env.CREDENTIALS);
@@ -17,7 +17,7 @@ admin.initializeApp({
 
 let db = admin.firestore();
 
-const Discord = require('discord.js');
+const Discord = require("discord.js");
 const client = new Discord.Client();
 client.login(process.env.TOKEN);
 
@@ -25,27 +25,27 @@ let eitaCounter = 0;
 let caraioCounter = 0;
 let panificadoraAlfaCounter = 0;
 let spinOptions = [
-  'deninha:776790121399451718',
-  'patocorniopink:764155550941315084',
-  'jpbrab0EIsso:771852824715067412',
-  'pachic2Oo:764136010744332328',
-  'Kappa:775520055756324894',
-  'deninho:777326021007245323',
-  'D_:776935665081516092',
+  "deninha:776790121399451718",
+  "patocorniopink:764155550941315084",
+  "jpbrab0EIsso:771852824715067412",
+  "pachic2Oo:764136010744332328",
+  "Kappa:775520055756324894",
+  "deninho:777326021007245323",
+  "D_:776935665081516092",
 ];
-const emojiPadrao = '<:KappaGolden:777234103543136256>';
+const emojiPadrao = "<:KappaGolden:777234103543136256>";
 var block = false;
 
-client.on('ready', () => {
+client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
 
   startDivulgation(client);
 });
 
-client.on('message', (message) => {
+client.on("message", (message) => {
   if (message.author.bot) return;
   message.content = message.content.toLowerCase();
-  const splitMessage = message.content.split(' ');
+  const splitMessage = message.content.split(" ");
 
   antiDesculpasForMorganna(message);
   reactToApresentation(message);
@@ -57,7 +57,7 @@ client.on('message', (message) => {
 function salvarPontos(user, points) {
   users = [];
 
-  const cassino = db.collection('cassino');
+  const cassino = db.collection("cassino");
   cassino
     .get()
     .then((snapshot) => {
@@ -85,36 +85,36 @@ function salvarPontos(user, points) {
       }
     })
     .catch((err) => {
-      console.log('Error getting documents', err);
+      console.log("Error getting documents", err);
     });
 }
 
 function antiDesculpasForMorganna(message) {
-  const sorries = ['desculpas', 'perdão', 'perdões', 'desculpa', 'foi mal'];
+  const sorries = ["desculpas", "perdão", "perdões", "desculpa", "foi mal"];
   let checkSorries = sorries.some((v) => message.content.includes(v));
-  if (message.author.username == 'morgiovanelli' && checkSorries) {
-    message.reply('SEM DESCULPAS MORGANNA!');
+  if (message.author.username == "morgiovanelli" && checkSorries) {
+    message.reply("SEM DESCULPAS MORGANNA!");
   }
 }
 
 function reactToApresentation(message) {
-  if (message.channel.name == '👩🏻apresentação👨🏻') {
-    const pachiHype = '764136952177229835';
+  if (message.channel.name == "👩🏻apresentação👨🏻") {
+    const pachiHype = "764136952177229835";
     message.react(pachiHype);
   }
 }
 
 function reactToEIsso(message) {
-  const accepts = ['é isso', 'e isso', 'É ISSO', 'E ISSO'];
+  const accepts = ["é isso", "e isso", "É ISSO", "E ISSO"];
   if (accepts.includes(message.content)) {
-    const eisso = '771852824715067412';
+    const eisso = "771852824715067412";
     message.react(eisso);
   }
 }
 
 async function verRanking(username, userId) {
-  rankingString = '';
-  const connection = await db.collection('cassino').get();
+  rankingString = "";
+  const connection = await db.collection("cassino").get();
   const usersBrute = connection._docs();
   const users = [];
 
@@ -158,65 +158,65 @@ async function verRanking(username, userId) {
 }
 
 async function generalCommands(message, splitMessage) {
-  const deninhoReact = '777326021007245323';
+  const deninhoReact = "777326021007245323";
   const username = message.author.username;
   const userId = message.author.id;
 
-  if (message.content == 'bom dia' || message.content == 'dia') {
+  if (message.content == "bom dia" || message.content == "dia") {
     message.reply(`Bom Dia!`);
     message.react(deninhoReact);
-  } else if (message.content == 'boa noite' || message.content == 'noite') {
+  } else if (message.content == "boa noite" || message.content == "noite") {
     message.reply(`Boa Noite!`);
     message.react(deninhoReact);
-  } else if (message.content == 'boas festas') {
+  } else if (message.content == "boas festas") {
     message.reply(`Boas Festas!`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*eita') {
+  } else if (splitMessage[0] == "!eita") {
     eitaCounter++;
     message.reply(`A Lexyca já falou eita ${eitaCounter} vezes`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*caraio') {
+  } else if (splitMessage[0] == "!caraio") {
     caraioCounter++;
     message.reply(`A Pachi já falou caraio ${caraioCounter} vezes`);
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*alfa') {
+  } else if (splitMessage[0] == "!alfa") {
     panificadoraAlfaCounter++;
     message.reply(
-      `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`,
+      `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*splash') {
-    message.reply('Splash Splash');
+  } else if (splitMessage[0] == "!splash") {
+    message.reply("Splash Splash");
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*selvagem') {
+  } else if (splitMessage[0] == "!selvagem") {
     message.reply(
-      'Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !selvagem https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*capturar') {
+  } else if (splitMessage[0] == "!capturar") {
     message.reply(
-      'Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !capturar https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*selva') {
+  } else if (splitMessage[0] == "!selva") {
     message.reply(
-      'Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr',
+      "Vá na live do pokemao dar o seu !selva https://twitch.tv/pokemaobr"
     );
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*bifeday') {
+  } else if (splitMessage[0] == "!bifeday") {
     now = new Date();
 
     if (now.getMonth() == 3 && now.getDate() == 20) {
-      message.reply('BIFEDAY!');
+      message.reply("BIFEDAY!");
     } else {
-      message.reply('noti tuday.');
+      message.reply("noti tuday.");
     }
-  } else if (splitMessage[0] == '*amor') {
-    message.reply('Amor!', { files: ['./img/pachiLuv.png'] });
+  } else if (splitMessage[0] == "!amor") {
+    message.reply("Amor!", { files: ["./img/pachiLuv.png"] });
     message.react(deninhoReact);
-  } else if (splitMessage[0] == '*cancelar') {
-    cancelamentosBrute = fs.readFileSync('cancelamentos.txt', 'utf8');
-    cancelamentos = cancelamentosBrute.split('\n');
+  } else if (splitMessage[0] == "!cancelar") {
+    cancelamentosBrute = fs.readFileSync("cancelamentos.txt", "utf8");
+    cancelamentos = cancelamentosBrute.split("\n");
 
     var cancelamento =
       cancelamentos[Math.floor(Math.random() * cancelamentos.length)];
@@ -226,22 +226,22 @@ async function generalCommands(message, splitMessage) {
     } else {
       message.reply(`cancelou o mundo por ${cancelamento}`);
     }
-  } else if (splitMessage[0] == '*padrao') {
+  } else if (splitMessage[0] == "!padrao") {
     if (splitMessage[1]) {
       const standard = splitMessage[1].toLowerCase();
       const channel = message.channel.name;
       fs.writeFileSync(`padrao-${channel}.txt`, standard);
       message.delete();
     }
-  } else if (splitMessage[0] == '*vergonha') {
+  } else if (splitMessage[0] == "!vergonha") {
     try {
-      const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
-      const breakersLine = breakersBrute.split('\n');
-      breakersMessage = '';
+      const breakersBrute = fs.readFileSync("breakers.txt", "utf8");
+      const breakersLine = breakersBrute.split("\n");
+      breakersMessage = "";
 
       breakersLine.forEach((breaker) => {
-        if (breaker != '') {
-          breakerData = breaker.split(',');
+        if (breaker != "") {
+          breakerData = breaker.split(",");
 
           breakersMessage += `\n${breakerData[0]} quebrou o padrão ${breakerData[1]} vezes`;
         }
@@ -249,19 +249,19 @@ async function generalCommands(message, splitMessage) {
 
       message.reply(breakersMessage);
     } catch (err) {}
-  } else if (splitMessage[0] == '*clap') {
+  } else if (splitMessage[0] == "!clap") {
     userClapped = splitMessage[1];
 
     message.delete();
-    message.channel.send(`${userClapped} CLAP`, { files: ['img/clap.gif'] });
-  } else if (splitMessage[0] == '*spin') {
+    message.channel.send(`${userClapped} CLAP`, { files: ["img/clap.gif"] });
+  } else if (splitMessage[0] == "!spin") {
     //Retorna se tiver um spin em andamento
     if (block) {
       message.reply(`Parabéns, é spam <:${spinOptions[3]}>`);
       return;
     } else if (
-      message.channel.name.includes('cassino') ||
-      message.channel.name.includes('teste-bot')
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
     ) {
       let sorteados = [];
       block = true;
@@ -273,7 +273,7 @@ async function generalCommands(message, splitMessage) {
       }
 
       let msg = await message.channel.send(
-        `${emojiPadrao} ${emojiPadrao} ${emojiPadrao}`,
+        `${emojiPadrao} ${emojiPadrao} ${emojiPadrao}`
       );
 
       setTimeout(() => {
@@ -301,18 +301,18 @@ async function generalCommands(message, splitMessage) {
         block = false;
       }, 3500);
     }
-  } else if (splitMessage[0] == '*roll') {
+  } else if (splitMessage[0] == "!roll") {
     if (
-      message.channel.name.includes('cassino') ||
-      message.channel.name.includes('teste-bot')
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
     ) {
       const randomNumber = Math.random() * 100;
-      const formatNumber = new Intl.NumberFormat('pt-BR', {
+      const formatNumber = new Intl.NumberFormat("pt-BR", {
         maximumSignificantDigits: 2,
       }).format(randomNumber);
       if (randomNumber >= 99) {
         message.reply(
-          `Você tirou ${formatNumber}, Parabéns, Você ganhou com pontos elevados!`,
+          `Você tirou ${formatNumber}, Parabéns, Você ganhou com pontos elevados!`
         );
         salvarPontos(username, 150);
       } else if (randomNumber >= 95) {
@@ -323,14 +323,29 @@ async function generalCommands(message, splitMessage) {
         salvarPontos(username, 0);
       }
     }
-  } else if (splitMessage[0] == '*rank') {
+  } else if (splitMessage[0] == "!rank") {
     if (
-      message.channel.name.includes('cassino') ||
-      message.channel.name.includes('teste-bot')
+      message.channel.name.includes("cassino") ||
+      message.channel.name.includes("teste-bot")
     ) {
       let msg = await verRanking(username, userId);
       message.channel.send(msg);
     }
+  } else if (splitMessage[0] == "!poll") {
+    let question = "";
+
+    for (i = 1; i < splitMessage.length; i++) {
+      question += splitMessage[i];
+    }
+
+    message.delete();
+
+    message.channel
+      .send(message.author.username + ": **" + question + "**")
+      .then((message) => {
+        message.react("✅");
+        message.react("❌");
+      });
   }
 }
 
@@ -338,30 +353,30 @@ function executeStandard(message) {
   try {
     const channel = message.channel.name;
     const standard = fs
-      .readFileSync(`padrao-${channel}.txt`, 'utf8')
+      .readFileSync(`padrao-${channel}.txt`, "utf8")
       .toLowerCase();
 
-    messageSplited = message.content.split(' ');
+    messageSplited = message.content.split(" ");
 
     if (
       message.content != standard &&
-      standard != '' &&
-      messageSplited[0] != '*padrao'
+      standard != "" &&
+      messageSplited[0] != "!padrao"
     ) {
       message.reply(
-        'Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!',
+        "Você não seguiu o padrão! Adicionando mais uma quebra de padrão á sua ficha!"
       );
 
-      fs.writeFileSync(`padrao-${channel}.txt`, '');
+      fs.writeFileSync(`padrao-${channel}.txt`, "");
 
       try {
         const username = message.author.username;
-        const breakersBrute = fs.readFileSync('breakers.txt', 'utf8');
-        const breakersLine = breakersBrute.split('\n');
+        const breakersBrute = fs.readFileSync("breakers.txt", "utf8");
+        const breakersLine = breakersBrute.split("\n");
         const breakers = [];
 
         breakersLine.forEach((breaker) => {
-          breakers.push(breaker.split(','));
+          breakers.push(breaker.split(","));
         });
 
         const index = findBreaker(breakers, username);
@@ -373,12 +388,12 @@ function executeStandard(message) {
 
           const content = breakersBrute.replace(
             `${username},${breaks}`,
-            `${username},${breaks + 1}`,
+            `${username},${breaks + 1}`
           );
 
-          fs.writeFileSync('breakers.txt', content);
+          fs.writeFileSync("breakers.txt", content);
         } else {
-          fs.appendFileSync('breakers.txt', `${username},1\n`);
+          fs.appendFileSync("breakers.txt", `${username},1\n`);
         }
       } catch (err) {}
     }
@@ -389,29 +404,29 @@ function startDivulgation(client) {
   setInterval(() => {
     streamers.forEach((streamer) => {
       let request = https.get(
-        'https://api.twitch.tv/kraken/streams/' + streamer.id,
+        "https://api.twitch.tv/kraken/streams/" + streamer.id,
         {
           headers: {
-            Accept: 'application/vnd.twitchtv.v5+json',
-            'Client-ID': process.env.CLIENT_ID,
+            Accept: "application/vnd.twitchtv.v5+json",
+            "Client-ID": process.env.CLIENT_ID,
           },
         },
         (res) => {
           if (res.statusCode !== 200) {
             console.error(
-              `Did not get an OK from the server. Code: ${res.statusCode}`,
+              `Did not get an OK from the server. Code: ${res.statusCode}`
             );
             res.resume();
             return;
           }
 
-          let data = '';
+          let data = "";
 
-          res.on('data', (chunk) => {
+          res.on("data", (chunk) => {
             data += chunk;
           });
 
-          res.on('close', () => {
+          res.on("close", () => {
             streamerData = JSON.parse(data);
             if (
               streamerData.stream != null &&
@@ -419,22 +434,22 @@ function startDivulgation(client) {
             ) {
               streamersOn.set(streamer.name, streamerData);
               client.channels.cache
-                .get('763505017944277003')
+                .get("763505017944277003")
                 .send(
-                  '**' +
+                  "**" +
                     streamer.name +
-                    '**' +
-                    ' Está on! \n_' +
+                    "**" +
+                    " Está on! \n_" +
                     streamerData.stream.channel.status +
-                    '_\nhttps://twitch.tv/' +
-                    streamer.name,
+                    "_\nhttps://twitch.tv/" +
+                    streamer.name
                 );
             }
             if (streamersOn.get(streamer.name) && streamerData.stream == null) {
               streamersOn.delete(streamer.name);
             }
           });
-        },
+        }
       );
     });
   }, 20000);
