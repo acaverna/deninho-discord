@@ -335,7 +335,7 @@ async function generalCommands(message, splitMessage) {
     let question = "";
 
     for (i = 1; i < splitMessage.length; i++) {
-      question += splitMessage[i];
+      question += splitMessage[i] + " ";
     }
 
     message.delete();
