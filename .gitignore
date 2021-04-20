@@ -1,3 +1,4 @@
 .env
+.undodir
 node_modules
 pontos.json

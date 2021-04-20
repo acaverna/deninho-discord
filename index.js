@@ -8,6 +8,31 @@ const admin = require("firebase-admin");
 const streamers = JSON.parse(
   fs.readFileSync("./data/streamers.json", { encoding: "utf8", flag: "r" })
 );
+const youtubers = JSON.parse(
+  fs.readFileSync("./data/youtubers.json", { encoding: "utf8", flag: "r" })
+);
+var videosOriginal = [];
+
+youtubers.forEach((yt) => {
+  let data = null;
+  https.get(
+    "https://www.googleapis.com/youtube/v3/search?key=" +
+      process.env.googleKey +
+      "&channelId=" +
+      yt.id +
+      "&maxResults=50",
+    (resp) => {
+      resp.on("data", (chunk) => {
+        data += chunk;
+      });
+
+      // The whole response has been received. Print out the result.
+      resp.on("end", () => {
+        videosOriginal[yt.name] = data;
+      });
+    }
+  );
+});
 
 let serviceAccount = JSON.parse(process.env.CREDENTIALS);
 
@@ -39,7 +64,8 @@ var block = false;
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
 
-  startDivulgation(client);
+  startDivulgationTwitch(client);
+  startDivulgationYoutube(client);
 });
 
 client.on("message", (message) => {
@@ -351,36 +377,36 @@ async function generalCommands(message, splitMessage) {
 ⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
 ⠸⡇⠀⠿⡀⠀⠀⠀⣀⡴⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
 ⠀⠀⠀⠀⠑⢄⣠⠾⠁⣀⣄⡈⠙⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⢀⡀⠁⠀⠀⠈⠙⠛⠂⠈⣿⣿⣿⣿⣿⠿⡿⢿⣆⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⢀⡾⣁⣀⠀⠴⠂⠙⣗⡀⠀⢻⣿⣿⠭⢤⣴⣦⣤⣹⠀⠀⠀⢀⢴⣶⣆
- ⠀⠀⢀⣾⣿⣿⣿⣷⣮⣽⣾⣿⣥⣴⣿⣿⡿⢂⠔⢚⡿⢿⣿⣦⣴⣾⠁⠸⣼⡿
- ⠀⢀⡞⠁⠙⠻⠿⠟⠉⠀⠛⢹⣿⣿⣿⣿⣿⣌⢤⣼⣿⣾⣿⡟⠉⠀⠀⠀⠀⠀
- ⠀⣾⣷⣶⠇⠀⠀⣤⣄⣀⡀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
- ⠀⠉⠈⠉⠀⠀⢦⡈⢻⣿⣿⣿⣶⣶⣶⣶⣤⣽⡹⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠉⠲⣽⡻⢿⣿⣿⣿⣿⣿⣿⣷⣜⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣷⣶⣮⣭⣽⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⣀⣀⣈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠿⠛⠉
+      ⠀⠀⠀⠀⢀⡀⠁⠀⠀⠈⠙⠛⠂⠈⣿⣿⣿⣿⣿⠿⡿⢿⣆⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⢀⡾⣁⣀⠀⠴⠂⠙⣗⡀⠀⢻⣿⣿⠭⢤⣴⣦⣤⣹⠀⠀⠀⢀⢴⣶⣆
+      ⠀⠀⢀⣾⣿⣿⣿⣷⣮⣽⣾⣿⣥⣴⣿⣿⡿⢂⠔⢚⡿⢿⣿⣦⣴⣾⠁⠸⣼⡿
+      ⠀⢀⡞⠁⠙⠻⠿⠟⠉⠀⠛⢹⣿⣿⣿⣿⣿⣌⢤⣼⣿⣾⣿⡟⠉⠀⠀⠀⠀⠀
+      ⠀⣾⣷⣶⠇⠀⠀⣤⣄⣀⡀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
+      ⠀⠉⠈⠉⠀⠀⢦⡈⢻⣿⣿⣿⣶⣶⣶⣶⣤⣽⡹⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠉⠲⣽⡻⢿⣿⣿⣿⣿⣿⣿⣷⣜⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣷⣶⣮⣭⣽⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⣀⣀⣈⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠻⠿⠿⠿⠿⠛⠉
       `);
   } else if (splitMessage[0] == "!paidapation") {
     message.channel.send(`
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣶⡀⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠀⢱⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣷⠀⠀⠀⠀ 
+      ⠀⠀⠀⠀⠀⠀⠀⠀⢱⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⣿⣷⠀⠀⠀⠀ 
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣶⡀⠀⠀⠀⠀⣀⣀⣀⣀⣀⣼⣿⣿⡏⢹⠀⠀⠀⠀
- ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡿⣻⣿⡷⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀
- ⠀⠀⢀⣀⣠⠤⣤⣤⣼⣿⣿⣿⣇⢋⠟⣿⡿⠿⠛⠛⠛⠛⠛⠛⠿⢧⣤⣀⣀⠀
- ⢠⡖⠉⠴⢾⣿⡿⠋⠐⠈⢹⣿⣇⠢⡎⠁⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠈⣿⣿⡇
- ⢸⠁⠀⣃⣀⠃⠀⠀⠀⠀⢸⡟⠀⠈⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⣿⠁⠀
- ⠈⡇⠀⠈⠉⠁⠀⠀⠀⠀⡜⠀⢰⡀⠘⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀
- ⠀⠹⡀⠀⠀⠀⠀⠀⡠⠚⣠⣔⣶⠀⢀⡘⢦⣀⠀⠀⠀⠀⠀⠀⠀⢀⣾⢿⡆⠀
- ⠀⠀⠈⠐⠲⠶⠒⠋⠁⢾⡎⠻⠉⠡⠾⠋⣀⡈⠙⢒⣒⠠⠤⣤⣖⣿⣿⣿⡇⠀
- ⠀⠀⠀⠀⠀⠀⣄⡀⠀⢋⠉⠀⠁⠀⠐⠐⠲⣶⣶⣿⠧⠁⢀⠶⣿⢿⣿⣿⣿⣄
- ⠀⠀⠀⠀⠀⣆⣙⢿⣷⣼⣛⠿⡷⠶⢶⣶⡾⢟⡋⢅⠀⠀⠀⢈⣁⣺⣿⣿⣿⣿
- ⠀⠀⢀⢀⣠⣿⣿⣯⣭⣽⣿⡿⠛⠻⢿⣿⣯⣧⡨⣮⡶⡤⠢⠽⠽⠿⣿⣿⣷⣿
- ⠀⠀⡨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢷⣤⠉⢹⣯⣿⣜⣟⠊⠁⠀⣰⢶⣿⣿⣿⣿
- ⠀⢼⢻⣿⣿⣿⣿⣿⣿⣿⣟⢹⣿⡿⡵⣴⡌⠋⡟⠿⠎⡓⠞⠏⠙⠉⣉⣄⣼⣶
+      ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⡿⣻⣿⡷⣿⣿⣿⣿⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀
+      ⠀⠀⢀⣀⣠⠤⣤⣤⣼⣿⣿⣿⣇⢋⠟⣿⡿⠿⠛⠛⠛⠛⠛⠛⠿⢧⣤⣀⣀⠀
+      ⢠⡖⠉⠴⢾⣿⡿⠋⠐⠈⢹⣿⣇⠢⡎⠁⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠈⣿⣿⡇
+      ⢸⠁⠀⣃⣀⠃⠀⠀⠀⠀⢸⡟⠀⠈⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠀⠀⣿⠁⠀
+      ⠈⡇⠀⠈⠉⠁⠀⠀⠀⠀⡜⠀⢰⡀⠘⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀
+      ⠀⠹⡀⠀⠀⠀⠀⠀⡠⠚⣠⣔⣶⠀⢀⡘⢦⣀⠀⠀⠀⠀⠀⠀⠀⢀⣾⢿⡆⠀
+      ⠀⠀⠈⠐⠲⠶⠒⠋⠁⢾⡎⠻⠉⠡⠾⠋⣀⡈⠙⢒⣒⠠⠤⣤⣖⣿⣿⣿⡇⠀
+      ⠀⠀⠀⠀⠀⠀⣄⡀⠀⢋⠉⠀⠁⠀⠐⠐⠲⣶⣶⣿⠧⠁⢀⠶⣿⢿⣿⣿⣿⣄
+      ⠀⠀⠀⠀⠀⣆⣙⢿⣷⣼⣛⠿⡷⠶⢶⣶⡾⢟⡋⢅⠀⠀⠀⢈⣁⣺⣿⣿⣿⣿
+      ⠀⠀⢀⢀⣠⣿⣿⣯⣭⣽⣿⡿⠛⠻⢿⣿⣯⣧⡨⣮⡶⡤⠢⠽⠽⠿⣿⣿⣷⣿
+      ⠀⠀⡨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢷⣤⠉⢹⣯⣿⣜⣟⠊⠁⠀⣰⢶⣿⣿⣿⣿
+      ⠀⢼⢻⣿⣿⣿⣿⣿⣿⣿⣟⢹⣿⡿⡵⣴⡌⠋⡟⠿⠎⡓⠞⠏⠙⠉⣉⣄⣼⣶
       `);
   }
 }
@@ -436,10 +462,10 @@ function executeStandard(message) {
   } catch (err) {}
 }
 
-function startDivulgation(client) {
+function startDivulgationTwitch(client) {
   setInterval(() => {
     streamers.forEach((streamer) => {
-      let request = https.get(
+      https.get(
         "https://api.twitch.tv/kraken/streams/" + streamer.id,
         {
           headers: {
@@ -489,6 +515,51 @@ function startDivulgation(client) {
       );
     });
   }, 20000);
+}
+function startDivulgationYoutube(client) {
+  setInterval(() => {
+    youtubers.forEach((youtuber) => {
+      https.get(
+        "https://www.googleapis.com/youtube/v3/search?key=" +
+          process.env.googleKey +
+          "&channelId=" +
+          youtuber.id +
+          "&maxResults=50",
+        (res) => {
+          if (res.statusCode !== 200) {
+            console.error(
+              `Did not get an OK from the server. Code: ${res.statusCode}`
+            );
+            res.resume();
+            return;
+          }
+
+          let data = "";
+
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+
+          res.on("close", () => {
+            videosData = JSON.parse(data);
+            if (videosData[49] != videosOriginal[youtuber.name][49]) {
+              client.channels.cache
+                .get("763505017944277003")
+                .send(
+                  "**" +
+                    youtuber.name +
+                    "**" +
+                    " Postou um novo vídeo! \n_" +
+                    "https://www.youtube.com/watch?v=" +
+                    videosData[49].id.videoId
+                );
+              videosOriginal[youtuber.name] = videosData;
+            }
+          });
+        }
+      );
+    });
+  }, 300000);
 }
 
 function findBreaker(breakers, username) {
