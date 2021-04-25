@@ -408,6 +408,8 @@ async function generalCommands(message, splitMessage) {
       ⠀⠀⡨⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⢷⣤⠉⢹⣯⣿⣜⣟⠊⠁⠀⣰⢶⣿⣿⣿⣿
       ⠀⢼⢻⣿⣿⣿⣿⣿⣿⣿⣟⢹⣿⡿⡵⣴⡌⠋⡟⠿⠎⡓⠞⠏⠙⠉⣉⣄⣼⣶
       `);
+  } else if (splitMessage[0] == "!convite") {
+    message.reply("Está aqui o seu convite https://caverna.live/discord");
   }
 }
 
