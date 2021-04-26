@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "cheerio": "*",
     "discord.js": "^12.4.0",
     "dotenv": "^8.2.0",
     "firebase": "^8.2.0",
-    "firebase-admin": "^9.4.2"
+    "firebase-admin": "^9.4.2",
+    "htmlparser2": "^6.1.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.6"
