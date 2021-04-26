@@ -410,6 +410,14 @@ async function generalCommands(message, splitMessage) {
       `);
   } else if (splitMessage[0] == "!convite") {
     message.reply("Está aqui o seu convite https://caverna.live/discord");
+  } else if (
+    splitMessage[0] == "!chapuleta" ||
+    splitMessage[0] == "!chulipa" ||
+    splitMessage[0] == "!chulapa"
+  ) {
+    message.reply(
+      "https://cdn.discordapp.com/attachments/785199914773774386/836271433364668456/result.gif"
+    );
   }
 }
 
