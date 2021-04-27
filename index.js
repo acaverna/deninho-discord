@@ -581,7 +581,6 @@ function startDivulgationYoutube(client) {
 function gifToday(client){
   setInterval(() => {
     const dateNow = new Date()
-    if (dateNow.getUTCHours() == 10){
       https.get(
         "https://www.palavrasque.com/palavra-aleatoria.php?submit=nova+palavra",
         (res) => {
@@ -637,8 +636,7 @@ function gifToday(client){
           });
         }
       );
-    }
-  }, 10000)
+  }, 43200000)
 }
 
 function findBreaker(breakers, username) {
