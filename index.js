@@ -418,6 +418,8 @@ async function generalCommands(message, splitMessage) {
     message.reply(
       "https://cdn.discordapp.com/attachments/785199914773774386/836271433364668456/result.gif"
     );
+  } else if (splitMessage[0] == "!jp" || splitMessage[0] == "!teclado") {
+    message.reply("https://giphy.com/gifs/frustrated-keyboard-g8GfH3i5F0hby");
   }
 }
 
