@@ -19,10 +19,10 @@ youtubers.forEach((yt) => {
   let data = null;
   https.get(
     "https://www.googleapis.com/youtube/v3/search?key=" +
-      process.env.googleKey +
-      "&channelId=" +
-      yt.id +
-      "&maxResults=50",
+    process.env.googleKey +
+    "&channelId=" +
+    yt.id +
+    "&maxResults=50",
     (resp) => {
       resp.on("data", (chunk) => {
         data += chunk;
@@ -377,8 +377,8 @@ async function generalCommands(message, splitMessage) {
       });
   } else if (splitMessage[0] == "!jureg") {
     message.channel.send(`
-⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
-⠸⡇⠀⠿⡀⠀⠀⠀⣀⡴⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀ 
+⡴⠑⡄⠀⠀⠀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠸⡇⠀⠿⡀⠀⠀⠀⣀⡴⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠑⢄⣠⠾⠁⣀⣄⡈⠙⣿⣿⣿⣿⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀
       ⠀⠀⠀⠀⢀⡀⠁⠀⠀⠈⠙⠛⠂⠈⣿⣿⣿⣿⣿⠿⡿⢿⣆⠀⠀⠀⠀⠀⠀⠀
       ⠀⠀⠀⢀⡾⣁⣀⠀⠴⠂⠙⣗⡀⠀⢻⣿⣿⠭⢤⣴⣦⣤⣹⠀⠀⠀⢀⢴⣶⣆
@@ -517,12 +517,12 @@ function startDivulgationTwitch(client) {
                 .get("763505017944277003")
                 .send(
                   "**" +
-                    streamer.name +
-                    "**" +
-                    " Está on! \n_" +
-                    streamerData.stream.channel.status +
-                    "_\nhttps://twitch.tv/" +
-                    streamer.name
+                  streamer.name +
+                  "**" +
+                  " Está on! \n_" +
+                  streamerData.stream.channel.status +
+                  "_\nhttps://twitch.tv/" +
+                  streamer.name
                 );
             }
             if (streamersOn.get(streamer.name) && streamerData.stream == null) {
@@ -539,10 +539,10 @@ function startDivulgationYoutube(client) {
     youtubers.forEach((youtuber) => {
       https.get(
         "https://www.googleapis.com/youtube/v3/search?key=" +
-          process.env.googleKey +
-          "&channelId=" +
-          youtuber.id +
-          "&maxResults=50",
+        process.env.googleKey +
+        "&channelId=" +
+        youtuber.id +
+        "&maxResults=50",
         (res) => {
           if (res.statusCode !== 200) {
             console.error(
@@ -565,11 +565,11 @@ function startDivulgationYoutube(client) {
                 .get("763505017944277003")
                 .send(
                   "**" +
-                    youtuber.name +
-                    "**" +
-                    " Postou um novo vídeo! \n_" +
-                    "https://www.youtube.com/watch?v=" +
-                    videosData[49].id.videoId
+                  youtuber.name +
+                  "**" +
+                  " Postou um novo vídeo! \n_" +
+                  "https://www.youtube.com/watch?v=" +
+                  videosData[49].id.videoId
                 );
               videosOriginal[youtuber.name] = videosData;
             }
@@ -582,7 +582,6 @@ function startDivulgationYoutube(client) {
 
 function gifToday(client) {
   setInterval(() => {
-    const dateNow = new Date();
     https.get(
       "https://www.palavrasque.com/palavra-aleatoria.php?submit=nova+palavra",
       (res) => {
@@ -607,8 +606,8 @@ function gifToday(client) {
 
           https.get(
             "https://api.giphy.com/v1/gifs/search?api_key=UaYWNBJPLor7AvHnTAj8bUmkBc43OBt3&q=" +
-              randomWord +
-              "&limit=1&offset=0&rating=pg-13&lang=pt",
+            randomWord +
+            "&limit=1&offset=0&rating=pg-13&lang=pt",
             (resgiphy) => {
               if (resgiphy.statusCode !== 200) {
                 console.error(
