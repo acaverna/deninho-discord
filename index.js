@@ -640,7 +640,7 @@ function gifToday(client) {
         });
       }
     );
-  }, 43200000);
+  }, 4320000);
 }
 
 function findBreaker(breakers, username) {
