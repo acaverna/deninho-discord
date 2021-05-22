@@ -68,7 +68,6 @@ client.on("ready", () => {
 
   startDivulgationTwitch(client);
   startDivulgationYoutube(client);
-  gifToday(client);
 });
 
 client.on("message", (message) => {
@@ -578,69 +577,6 @@ function startDivulgationYoutube(client) {
       );
     });
   }, 300000);
-}
-
-function gifToday(client) {
-  setInterval(() => {
-    https.get(
-      "https://www.palavrasque.com/palavra-aleatoria.php?submit=nova+palavra",
-      (res) => {
-        if (res.statusCode !== 200) {
-          console.error(
-            `did not get an ok from the server. code: ${res.statusCode}`
-          );
-          res.resume();
-          return;
-        }
-
-        let data = "";
-
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-
-        res.on("close", () => {
-          const dom = htmlparser2.parseDOM(data);
-          const $ = cheerio.load(dom);
-          const randomWord = $("b").text();
-
-          https.get(
-            "https://api.giphy.com/v1/gifs/search?api_key=UaYWNBJPLor7AvHnTAj8bUmkBc43OBt3&q=" +
-            randomWord +
-            "&limit=1&offset=0&rating=pg-13&lang=pt",
-            (resgiphy) => {
-              if (resgiphy.statusCode !== 200) {
-                console.error(
-                  `did not get an ok from the server. code: ${resgiphy.statusCode}`
-                );
-                resgiphy.resume();
-                return;
-              }
-
-              let data = "";
-
-              resgiphy.on("data", (chunk) => {
-                data += chunk;
-              });
-
-              resgiphy.on("close", () => {
-                dataJSON = JSON.parse(data);
-                if (dataJSON.data.length >= 1) {
-                  const gifUrl = dataJSON.data[0].url;
-                  client.channels.cache
-                    .get("836220436157038652")
-                    .send(
-                      "O tema de gif de hoje é **" + randomWord + "** " + gifUrl
-                    );
-                } else {
-                }
-              });
-            }
-          );
-        });
-      }
-    );
-  }, 4320000);
 }
 
 function findBreaker(breakers, username) {
