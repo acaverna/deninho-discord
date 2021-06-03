@@ -40,9 +40,10 @@ var block = false;
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
   startDivulgationTwitch(client);
-})
+});
 
 client.on("message", (message) => {
+  console.log(message);
   if (message.author.bot) return;
   message.content = message.content.toLowerCase();
   const splitMessage = message.content.split(" ");
@@ -397,11 +398,12 @@ async function generalCommands(message, splitMessage) {
     );
   } else if (splitMessage[0] == "!jp" || splitMessage[0] == "!teclado") {
     message.reply("https://giphy.com/gifs/frustrated-keyboard-g8GfH3i5F0hby");
-  }
-  else if (splitMessage[0] == "!fofoca"){
+  } else if (splitMessage[0] == "!fofoca") {
     const fofoca = new Discord.MessageEmbed()
-      .setTitle('Fofoca')
-      .setImage('https://raw.githubusercontent.com/acaverna/deninho-discord/main/img/fofoca.png')
+      .setTitle("Fofoca")
+      .setImage(
+        "https://raw.githubusercontent.com/acaverna/deninho-discord/main/img/fofoca.png"
+      );
 
     message.channel.send(fofoca);
   }
@@ -495,12 +497,12 @@ function startDivulgationTwitch(client) {
                 .get("763505017944277003")
                 .send(
                   "**" +
-                  streamer.name +
-                  "**" +
-                  " Está on! \n_" +
-                  streamerData.stream.channel.status +
-                  "_\nhttps://twitch.tv/" +
-                  streamer.name
+                    streamer.name +
+                    "**" +
+                    " Está on! \n_" +
+                    streamerData.stream.channel.status +
+                    "_\nhttps://twitch.tv/" +
+                    streamer.name
                 );
             }
             if (streamersOn.get(streamer.name) && streamerData.stream == null) {
@@ -511,6 +513,30 @@ function startDivulgationTwitch(client) {
       );
     });
   }, 20000);
+}
+function lagostaVrau(client) {
+  setInterval(() => {
+    fs.readFile("./data/lagosta.txt", "utf8", function (err, data) {
+      if (err) {
+        return console.log(err);
+      }
+      const lagostaFrasesFilosoficas = data.split("\n");
+
+      const lagostaFraseFilosofica =
+        lagostaFrasesFilosoficas[
+          Math.floor(Math.random() * lagostaFrasesFilosoficas.length)
+        ];
+
+      client.channels.cache
+        .get("785199914773774386")
+        .send(
+          "A Lagosta, olhou para o abismo do mar, e disse: " +
+            "**" +
+            lagostaFraseFilosofica +
+            "**"
+        );
+    });
+  }, 86400000);
 }
 
 function findBreaker(breakers, username) {
