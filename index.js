@@ -39,7 +39,7 @@ var block = false;
 
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
-  startDivulgationTwitch(client);
+  // startDivulgationTwitch(client);
 })
 
 client.on("message", (message) => {
@@ -397,6 +397,13 @@ async function generalCommands(message, splitMessage) {
     );
   } else if (splitMessage[0] == "!jp" || splitMessage[0] == "!teclado") {
     message.reply("https://giphy.com/gifs/frustrated-keyboard-g8GfH3i5F0hby");
+  }
+  else if (splitMessage[0] == "!fofoca"){
+    const fofoca = new Discord.MessageEmbed()
+      .setTitle('Fofoca')
+      .setImage('https://raw.githubusercontent.com/acaverna/deninho-discord/main/img/fofoca.png')
+
+    message.channel.send(fofoca);
   }
 }
 
