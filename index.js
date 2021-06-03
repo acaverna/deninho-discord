@@ -39,13 +39,7 @@ var block = false;
 
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
-
   startDivulgationTwitch(client);
-
-  var chan01 = client.channels.cache.get('785536433943085077')
-  var chan02 = client.channels.cache.get('763552041863610378')
-
-  console.log(chan01.members)
 })
 
 client.on("message", (message) => {
