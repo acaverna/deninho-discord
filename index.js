@@ -39,7 +39,7 @@ var block = false;
 
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
-  // startDivulgationTwitch(client);
+  startDivulgationTwitch(client);
 })
 
 client.on("message", (message) => {
