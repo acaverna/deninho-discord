@@ -40,6 +40,7 @@ var block = false;
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
   startDivulgationTwitch(client);
+  lagostaVrau(client)
 });
 
 client.on("message", (message) => {
