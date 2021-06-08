@@ -40,7 +40,12 @@ var block = false;
 client.on("ready", () => {
   console.log(`Logged as ${client.user.tag}`);
   startDivulgationTwitch(client);
+
   lagostaVrau(client)
+  setInterval(() => {
+    lagostaVrau(client);
+  }, 86400000);
+
 });
 
 client.on("message", (message) => {
@@ -516,28 +521,26 @@ function startDivulgationTwitch(client) {
   }, 20000);
 }
 function lagostaVrau(client) {
-  setInterval(() => {
-    fs.readFile("./data/lagosta.txt", "utf8", function (err, data) {
-      if (err) {
-        return console.log(err);
-      }
-      const lagostaFrasesFilosoficas = data.split("\n");
+  fs.readFile("./data/lagosta.txt", "utf8", function (err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    const lagostaFrasesFilosoficas = data.split("\n");
 
-      const lagostaFraseFilosofica =
-        lagostaFrasesFilosoficas[
-          Math.floor(Math.random() * lagostaFrasesFilosoficas.length)
-        ];
+    const lagostaFraseFilosofica =
+      lagostaFrasesFilosoficas[
+        Math.floor(Math.random() * lagostaFrasesFilosoficas.length)
+      ];
 
-      client.channels.cache
-        .get("785199914773774386")
-        .send(
-          "A Lagosta, olhou para o abismo do mar, e disse: " +
-            "**" +
-            lagostaFraseFilosofica +
-            "**"
-        );
-    });
-  }, 86400000);
+    client.channels.cache
+      .get("785199914773774386")
+      .send(
+        "A Lagosta, olhou para o abismo do mar, e disse: " +
+          "**" +
+          lagostaFraseFilosofica +
+          "**"
+      );
+  });
 }
 
 function findBreaker(breakers, username) {
