@@ -4,6 +4,6 @@ const {
 
 exports.clientOnMessageReactionAdd = (client) => {
   client.on("messageReactionAdd", async (reaction, user) => {
-    kotlinautasGreetings(reaction, user);
+    kotlinautasGreetings(client, reaction, user);
   });
 };

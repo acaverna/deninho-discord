@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 exports.lagostaVrau = (client) => {
-  fs.readFile("./data/lagosta.txt", "utf8", function (err, data) {
+  fs.readFile(__dirname + "/../data/lagosta.txt", "utf8", function (err, data) {
     if (err) {
       return console.log(err);
     }

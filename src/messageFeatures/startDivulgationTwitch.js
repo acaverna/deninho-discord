@@ -3,7 +3,7 @@ const https = require("https");
 
 exports.startDivulgationTwitch = (client) => {
   const streamers = JSON.parse(
-    fs.readFileSync("../data/streamers.json", { encoding: "utf8", flag: "r" })
+    fs.readFileSync(__dirname + "/../data/streamers.json", { encoding: "utf8", flag: "r" })
   );
 
   const streamersOn = new Map();
