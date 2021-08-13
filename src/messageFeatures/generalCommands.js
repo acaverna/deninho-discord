@@ -1,7 +1,7 @@
 require("dotenv").config();
 const fs = require("fs");
 
-const { findBreaker } = require("./findBreaker");
+const Discord = require("discord.js");
 const { salvarPontos } = require("./salvarPontos");
 const { verRanking } = require("./verRanking");
 
@@ -273,7 +273,7 @@ exports.generalCommands = async (message, splitMessage) => {
     const fofoca = new Discord.MessageEmbed()
       .setTitle("Fofoca")
       .setImage(
-        "https://raw.githubusercontent.com/acaverna/deninho-discord/main/img/fofoca.png"
+        "https://i.imgur.com/jObHGfU.png"
       );
 
     message.channel.send(fofoca);
