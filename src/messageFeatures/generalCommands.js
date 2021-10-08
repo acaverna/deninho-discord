@@ -34,13 +34,13 @@ exports.generalCommands = async (message, splitMessage) => {
   const username = message.author.username;
   const userId = message.author.id;
 
-  if (message.content == "bom dia" || message.content == "dia") {
+  if (message.content.startsWith("bom dia") || message.content == "dia") {
     message.reply(`Bom Dia!`);
     message.react(deninhoReact);
-  } else if (message.content == "boa noite" || message.content == "noite") {
+  } else if (message.content.startsWith("boa noite") || message.content == "noite") {
     message.reply(`Boa Noite!`);
     message.react(deninhoReact);
-  } else if (message.content == "boas festas") {
+  } else if (message.startsWith("boas festas")) {
     message.reply(`Boas Festas!`);
     message.react(deninhoReact);
   } else if (splitMessage[0] == "!eita") {
@@ -272,9 +272,7 @@ exports.generalCommands = async (message, splitMessage) => {
   } else if (splitMessage[0] == "!fofoca") {
     const fofoca = new Discord.MessageEmbed()
       .setTitle("Fofoca")
-      .setImage(
-        "https://i.imgur.com/jObHGfU.png"
-      );
+      .setImage("https://i.imgur.com/jObHGfU.png");
 
     message.channel.send(fofoca);
   }
