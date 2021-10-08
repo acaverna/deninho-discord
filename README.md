@@ -8,7 +8,7 @@ Para adicionar o Deninho Discord no seu servidor de Discord, entre [no link para
 
 # Comandos
 
-Todos os comandos começam com o profixo `*`
+Todos os comandos começam com o profixo `!`
 
 ## eita
 
