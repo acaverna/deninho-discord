@@ -1,5 +1,3 @@
-const streamersDivulgated = []
-
 const fs = require("fs");
 const https = require("https");
 
@@ -41,25 +39,21 @@ exports.startDivulgationTwitch = (client) => {
               streamerData.stream != null &&
               !streamersOn.get(streamer.name)
             ) {
-              if (!streamersDivulgated.includes(streamer.name)){
-                addDivulgatedStreamer(streamer.name)
-                streamersOn.set(streamer.name, streamerData);
-                client.channels.cache
-                  .get("763505017944277003")
-                  .send(
-                    "**" +
+              streamersOn.set(streamer.name, streamerData);
+              client.channels.cache
+                .get("763505017944277003")
+                .send(
+                  "**" +
                     streamer.name +
                     "**" +
                     " Está on! \n_" +
                     streamerData.stream.channel.status +
                     "_\nhttps://twitch.tv/" +
                     streamer.name
-                  );
-              }
-              if (streamersOn.get(streamer.name) && streamerData.stream == null) {
-                streamersOn.delete(streamer.name);
-              }
-
+                );
+            }
+            if (streamersOn.get(streamer.name) && streamerData.stream == null) {
+              streamersOn.delete(streamer.name);
             }
           });
         }
@@ -67,18 +61,3 @@ exports.startDivulgationTwitch = (client) => {
     });
   }, 20000);
 };
-
-function addDivulgatedStreamer(streamerName){
-  streamersDivulgated.push(streamerName)
-  setTimeout(() => {
-    removeItemOnce(streamersDivulgated, streamerName)
-  }, 300000)
-}
-
-function removeItemOnce(arr, value) {
-  var index = arr.indexOf(value);
-  if (index > -1) {
-    arr.splice(index, 1);
-  }
-  return arr;
-}
