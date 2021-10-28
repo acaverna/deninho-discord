@@ -87,7 +87,7 @@ exports.generalCommands = async (message, splitMessage) => {
     message.reply("Amor!", { files: ["../img/pachiLuv.png"] });
     message.react(deninhoReact);
   } else if (splitMessage[0] == "!cancelar") {
-    cancelamentosBrute = fs.readFileSync("../cancelamentos.txt", "utf8");
+    cancelamentosBrute = fs.readFileSync("../data/cancelamentos.txt", "utf8");
     cancelamentos = cancelamentosBrute.split("\n");
 
     var cancelamento =
