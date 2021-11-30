@@ -35,9 +35,15 @@ exports.generalCommands = async (message, splitMessage) => {
   const userId = message.author.id;
 
   if (message.content.startsWith("bom dia") || message.content == "dia") {
+    if (Math.random() >= 95) {
+      message.reply(`Bom dia é o caralho`);
+    }
     message.reply(`Bom Dia!`);
     message.react(deninhoReact);
-  } else if (message.content.startsWith("boa noite") || message.content == "noite") {
+  } else if (
+    message.content.startsWith("boa noite") ||
+    message.content == "noite"
+  ) {
     message.reply(`Boa Noite!`);
     message.react(deninhoReact);
   } else if (message.startsWith("boas festas")) {
@@ -87,7 +93,10 @@ exports.generalCommands = async (message, splitMessage) => {
     message.reply("Amor!", { files: ["../img/pachiLuv.png"] });
     message.react(deninhoReact);
   } else if (splitMessage[0] == "!cancelar") {
-    cancelamentosBrute = fs.readFileSync(__dirname + "/../data/cancelamentos.txt", "utf8");
+    cancelamentosBrute = fs.readFileSync(
+      __dirname + "/../data/cancelamentos.txt",
+      "utf8"
+    );
     cancelamentos = cancelamentosBrute.split("\n");
 
     var cancelamento =
