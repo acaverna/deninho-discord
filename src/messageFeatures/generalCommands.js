@@ -35,7 +35,7 @@ exports.generalCommands = async (message, splitMessage) => {
   const userId = message.author.id;
 
   if (message.content.startsWith("bom dia") || message.content == "dia") {
-    if (Math.random() >= 95) {
+    if (Math.random() >= 0.95) {
       message.reply(`Bom dia é o caralho`);
     }
     message.reply(`Bom Dia!`);
