@@ -9,7 +9,7 @@ exports.clientOnReady = (client) => {
 
     startDivulgationTwitch(client);
 
-    lagostaVrau(client)
+    lagostaVrau(client);
     setInterval(() => {
       lagostaVrau(client);
     }, 86400000);

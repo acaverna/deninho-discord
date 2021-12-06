@@ -5,6 +5,8 @@ const Discord = require("discord.js");
 const { salvarPontos } = require("./salvarPontos");
 const { verRanking } = require("./verRanking");
 
+const vips = process.env.VIPS.split(",");
+
 const admin = require("firebase-admin");
 let serviceAccount = JSON.parse(process.env.CREDENTIALS);
 admin.initializeApp({
@@ -29,24 +31,51 @@ let spinOptions = [
   "D_:776935665081516092",
 ];
 
+let specialBomDiaMessages = [
+  "Bom dia é o caralho",
+  "Aqui é o grupo dos patocórnios pistola, bom dia é o caralho",
+  "Que o seu dia seja iluminado por deno, tenha um maravilhoso dia!",
+  "Bom dia rosa do meu jardim de Éden, espero que o seu dia seja tão linde quanto você!",
+];
+
+let specialBoaNoiteMessages = [
+  "Boa noite é o caralho",
+  "Dormindo tarde assim só a manhã vai ser boa mesmo",
+  "Que a sua noite seja maravilhosa, revigorante e abençoada pelo Deno",
+  "Durma com os anjos pessoa tão linde quanto uma bela noite de verão",
+];
+
 exports.generalCommands = async (message, splitMessage) => {
   const deninhoReact = "777326021007245323";
   const username = message.author.username;
   const userId = message.author.id;
 
   if (message.content.startsWith("bom dia") || message.content == "dia") {
-    if (Math.random() >= 0.95) {
-      message.reply(`Bom dia é o caralho`);
+    if (Math.random() >= 0.9 && vips.includes(userId)) {
+      var message =
+        specialBomDiaMessages[
+          Math.floor(Math.random() * specialBomDiaMessages.length)
+        ];
+      message.reply(message);
+    } else {
+      message.reply(`Bom Dia!`);
     }
-    message.reply(`Bom Dia!`);
     message.react(deninhoReact);
   } else if (
     message.content.startsWith("boa noite") ||
     message.content == "noite"
   ) {
-    message.reply(`Boa Noite!`);
+    if (Math.random() >= 0.9 && vips.includes(userId)) {
+      var message =
+        specialBoaNoiteMessages[
+          Math.floor(Math.random() * specialBoaNoiteMessages.length)
+        ];
+      message.reply(message);
+    } else {
+      message.reply(`Boa Noite!`);
+    }
     message.react(deninhoReact);
-  } else if (message.startsWith("boas festas")) {
+  } else if (message.content.startsWith("boas festas")) {
     message.reply(`Boas Festas!`);
     message.react(deninhoReact);
   } else if (splitMessage[0] == "!eita") {
@@ -62,9 +91,6 @@ exports.generalCommands = async (message, splitMessage) => {
     message.reply(
       `Já escutamos Panificadora Alfa ${panificadoraAlfaCounter} vezes`
     );
-    message.react(deninhoReact);
-  } else if (splitMessage[0] == "!splash") {
-    message.reply("Splash Splash");
     message.react(deninhoReact);
   } else if (splitMessage[0] == "!selvagem") {
     message.reply(
@@ -266,12 +292,14 @@ exports.generalCommands = async (message, splitMessage) => {
   } else if (splitMessage[0] == "!convite") {
     message.reply("Está aqui o seu convite https://caverna.live/discord");
   } else if (
+    splitMessage[0] == "!chalupa" ||
     splitMessage[0] == "!chapuleta" ||
-    splitMessage[0] == "!chulipa" ||
     splitMessage[0] == "!chulapa" ||
+    splitMessage[0] == "!chulipa" ||
+    splitMessage[0] == "!xalupa" ||
     splitMessage[0] == "!xapuleta" ||
-    splitMessage[0] == "!xulipa" ||
-    splitMessage[0] == "!xulapa"
+    splitMessage[0] == "!xulapa" ||
+    splitMessage[0] == "!xulipa"
   ) {
     message.reply(
       "https://cdn.discordapp.com/attachments/785199914773774386/836271433364668456/result.gif"
