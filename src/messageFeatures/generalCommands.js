@@ -52,11 +52,11 @@ exports.generalCommands = async (message, splitMessage) => {
 
   if (message.content.startsWith("bom dia") || message.content == "dia") {
     if (Math.random() >= 0.9 && vips.includes(userId)) {
-      var message =
+      var messageBomDia =
         specialBomDiaMessages[
           Math.floor(Math.random() * specialBomDiaMessages.length)
         ];
-      message.reply(message);
+      message.reply(messageBomDia);
     } else {
       message.reply(`Bom Dia!`);
     }
@@ -66,11 +66,11 @@ exports.generalCommands = async (message, splitMessage) => {
     message.content == "noite"
   ) {
     if (Math.random() >= 0.9 && vips.includes(userId)) {
-      var message =
+      var messageBoaNoite =
         specialBoaNoiteMessages[
           Math.floor(Math.random() * specialBoaNoiteMessages.length)
         ];
-      message.reply(message);
+      message.reply(messageBoaNoite);
     } else {
       message.reply(`Boa Noite!`);
     }

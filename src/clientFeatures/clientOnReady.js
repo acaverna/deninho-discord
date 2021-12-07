@@ -7,11 +7,11 @@ exports.clientOnReady = (client) => {
   client.on("ready", () => {
     console.log(`Logged as ${client.user.tag}`);
 
-    startDivulgationTwitch(client);
-
-    lagostaVrau(client);
-    setInterval(() => {
-      lagostaVrau(client);
-    }, 86400000);
+    // startDivulgationTwitch(client);
+    // 
+    // lagostaVrau(client);
+    // setInterval(() => {
+    //   lagostaVrau(client);
+    // }, 86400000);
   });
 };
