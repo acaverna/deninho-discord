@@ -62,6 +62,12 @@ exports.generalCommands = async (message, splitMessage) => {
     }
     message.react(deninhoReact);
   } else if (
+    message.content.startsWith("boa tarde") ||
+    message.content == "tarde"
+  ) {
+    message.reply(`Boa tarde`);
+    message.react(deninhoReact);
+  } else if (
     message.content.startsWith("boa noite") ||
     message.content == "noite"
   ) {
