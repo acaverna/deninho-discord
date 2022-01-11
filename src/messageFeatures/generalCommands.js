@@ -205,11 +205,11 @@ exports.generalCommands = async (message, splitMessage) => {
         if (sorteados[0] === sorteados[1] && sorteados[0] === sorteados[2]) {
           message.reply(`Parabéns você acaba de ganhar <:${sorteados[0]}>`);
 
-          salvarPontos(username, 100);
+          salvarPontos(db, username, 100);
         } else {
           message.reply(`Parabéns você perdeu`);
 
-          salvarPontos(username, 0);
+          salvarPontos(db, username, 0);
         }
         block = false;
       }, 3500);
