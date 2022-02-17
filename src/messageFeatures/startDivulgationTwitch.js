@@ -23,7 +23,7 @@ exports.startDivulgationTwitch = (client) => {
       })
         .then((data) => {
           const streamerData = data.data.data[0];
-          if (streamerData != undefined) {
+          if (streamerData != undefined && !streamersOn.get(streamer.name)) {
             streamersOn.set(streamer.name, streamerData);
             client.channels.cache
               .get("763505017944277003")
@@ -36,8 +36,10 @@ exports.startDivulgationTwitch = (client) => {
                   "_\nhttps://twitch.tv/" +
                   streamer.name
               );
-          }
-          if (streamersOn.get(streamer.name) && streamerData == undefined) {
+          } else if (
+            streamersOn.get(streamer.name) &&
+            streamerData == undefined
+          ) {
             streamersOn.delete(streamer.name);
           }
         })
